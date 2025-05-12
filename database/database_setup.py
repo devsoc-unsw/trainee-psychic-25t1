@@ -47,8 +47,8 @@ def main():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
     
-    # cursor.execute(users_create)
-    # cursor.execute(games_create)
+    cursor.execute(users_create)
+    cursor.execute(games_create)
     cursor.execute(scores_create)
     conn.commit()
 

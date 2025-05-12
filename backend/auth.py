@@ -5,8 +5,7 @@ from flask_jwt_extended import (
     jwt_required, 
     get_jwt_identity, 
     set_access_cookies,
-    unset_jwt_cookies, 
-    unset_access_cookies
+    unset_jwt_cookies,
 )
 import mysql.connector
 from dotenv import load_dotenv
