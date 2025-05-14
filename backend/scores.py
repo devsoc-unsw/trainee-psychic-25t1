@@ -79,15 +79,66 @@ def upload_score():
 @auth_bp.route('/scores/game', methods=['GET'])
 @jwt_required()
 def get_scores_by_game():
-    current_user_id = get_jwt_identity()
+    # current_user_id = get_jwt_identity()
+    data = request.get_json()
     
+    game_id = data['game_id']
+
+    # pull the scores from the database
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # check if game exists
+        get_game_query = "select * from Games where id = %s"
+        cursor.execute(get_game_query, [game_id])
+
+        game = cursor.fetchone()
+        if not game:
+            return jsonify({"msg": "Game not found."}), 404
+
+        # get all the scores.
+        get_scores_query = f"""select * from Scores where game_id = %s"""
+        cursor.execute(get_scores_query, [game_id])
+
+        scores = cursor.fetchall()
+
+        conn.commit()
+        # TODO: need some way to format scores?
+        return jsonify({"msg": f"scores : {scores}"})
+
+    except Exception as e:
+        print(f"Error {e}")
+        return jsonify({"msg": "Error"}), 500
+    finally:
+        cursor.close()
+        conn.close()
+
+
     # TODO: Return all the scores related to game_id in JSON.
 
 @auth_bp.route('/scores/user', methods=['GET'])
 @jwt_required()
-def get_scores_by_game():
+def get_scores_by_user():
     current_user_id = get_jwt_identity()
-    
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # fetch all of the scores related to the user
+        query = f"""select * from Scores where user_id = %s"""
+        cursor.execute(query, [current_user_id])
+        scores = cursor.fetchall()
+        conn.commit()
+        return jsonify({"msg": f"scores : {scores}"})
+
+    except Exception as e:
+        print(f"Error {e}")
+        return jsonify({"msg": "Error"}), 500
+    finally:
+        cursor.close()
+        conn.close()
     # TODO: Return all the scores related to current_user_id in JSON.
 
 
