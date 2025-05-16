@@ -21,7 +21,7 @@ export default function LoginPage() {
         <form onSubmit={login}>
           {/* username input */}
           <fieldset className="fieldset">
-            <legend className="fieldset-legend">Username</legend>
+            <legend className="fieldset-legend">Username or email</legend>
             <label className="input">
               <input
                 type="text"
