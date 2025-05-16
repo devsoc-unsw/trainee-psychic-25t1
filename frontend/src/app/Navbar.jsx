@@ -11,7 +11,7 @@ export default function Navbar() {
             tabIndex={0}
             className="menu menu-md dropdown-content bg-base-100 rounded-box z-1 mt-3 w-72 p-4 shadow">
             <li><a>HOME</a></li>
-            <li><a>LEADERBOARD</a></li>
+            <li><a onClick={()=>document.getElementById('leaderboardModal').showModal()}>LEADERBOARD</a></li>
             <li><a>PROFILE</a></li>
           </ul>
         </div>
@@ -21,7 +21,7 @@ export default function Navbar() {
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
           <li><a>HOME</a></li>
-          <li><a>LEADERBOARD</a></li>
+          <li><a onClick={()=>document.getElementById('leaderboardModal').showModal()}>LEADERBOARD</a></li>
           <li><a>PROFILE</a></li>
         </ul>
       </div>
