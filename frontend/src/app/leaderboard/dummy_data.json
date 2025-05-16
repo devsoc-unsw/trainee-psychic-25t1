@@ -1,0 +1,27 @@
+[
+    {
+        "id": 1,
+        "name": "Hector",
+        "score": "70"
+    },
+    {
+        "id": 2,
+        "name": "Lalo",
+        "score": "44"
+    },
+    {
+        "id": 3,
+        "name": "Tuco",
+        "score": "38"
+    },
+    {
+        "id": 4,
+        "name": "Gus",
+        "score": "50"
+    },
+    {
+        "id": 5,
+        "name": "Jesse",
+        "score": "30"
+    }
+]
