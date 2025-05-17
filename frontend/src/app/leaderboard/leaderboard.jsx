@@ -1,6 +1,3 @@
-
-
-
 export default function LeaderBoard(props) {
     function organise_data() {
         const data = props.scores;
