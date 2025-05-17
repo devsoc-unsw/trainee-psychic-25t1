@@ -9,26 +9,32 @@ export default function QuizPage() {
     const [showShape, setShowShape] = React.useState(false)
     const [coords, setCoords] = React.useState({x, y});
 
-    function getCoords() {
+    function getCoords(event) {
+        const rect = event.currentTarget.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
         setShowShape(true)
         setCoords({x, y})
     }
 
     return (
-        <div className="h-full">
-            <h1>Hello World</h1>
-            <div onClick={getCoords}>
-                <TransformWrapper>
-                    <TransformComponent>
-                        <div className="h-1/2 w-auto">
-                            <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-contain" />
-                        </div>
-                        {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px`, transform: 'translate(-50%, -50%)' }}>.</div>}
-                    </TransformComponent>
-                </TransformWrapper>
+            <div className="flex min-h-screen w-6/7 mx-auto">
+                <div onClick={getCoords}>
+                        <TransformWrapper>
+                            <TransformComponent>
+                                <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-fill" />
+                                        {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px`, transform: 'translate(-50%, -50%)' }}>.</div>}
+                            </TransformComponent>
+                    </TransformWrapper>
+                </div>
+                <div className="divider divider-horizontal"></div>
+                <div className="">
+                    <img src={"/images/unsw_locations/ainsworth.jpg"}></img>
+                    <p>Score: 0 | High Score: 0</p>
+                </div>
             </div>
+   
 
-        </div>
     )
 
 }
