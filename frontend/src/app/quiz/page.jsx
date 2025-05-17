@@ -23,7 +23,7 @@ export default function QuizPage() {
                         <div className="h-1/2 w-auto">
                             <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-contain" />
                         </div>
-                        {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px` }}>.</div>}
+                        {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px`, transform: 'translate(-50%, -50%)' }}>.</div>}
                     </TransformComponent>
                 </TransformWrapper>
             </div>
