@@ -7,9 +7,11 @@ export default function QuizPage() {
     const {x,y} = useMousePosition();
     
     const [showShape, setShowShape] = React.useState(false)
+    const [coords, setCoords] = React.useState({x, y});
 
     function getCoords() {
         setShowShape(true)
+        setCoords({x, y})
     }
 
     return (
@@ -21,7 +23,7 @@ export default function QuizPage() {
                         <div className="h-1/2 w-auto">
                             <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-contain" />
                         </div>
-                        <div className = "bg-red-500 w-5 h-5 absolute left-[100px] top-[100px]">.</div>
+                        {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px` }}>.</div>}
                     </TransformComponent>
                 </TransformWrapper>
             </div>
