@@ -18,7 +18,7 @@ export default function QuizPage() {
     }
 
     return (
-            <div className="flex min-h-screen w-6/7 mx-auto">
+            <div className="flex h-1/2 w-6/7 mx-auto">
                 <div onClick={getCoords}>
                         <TransformWrapper>
                             <TransformComponent>
@@ -28,9 +28,14 @@ export default function QuizPage() {
                     </TransformWrapper>
                 </div>
                 <div className="divider divider-horizontal"></div>
-                <div className="">
-                    <img src={"/images/unsw_locations/ainsworth.jpg"}></img>
-                    <p>Score: 0 | High Score: 0</p>
+                <div className="flex flex-col">
+                    <div className='w-[450px] h-[460px]'>
+                        <img className='w-full h-full object-cover' src={"/images/unsw_locations/ainsworth.jpg"}></img>
+                    </div>
+                    <div className='mx-auto mt-auto justify-start'>
+                        <button className="btn btn-primary w-1/2 mb-5">Lock in</button>
+                        <p>Score: 0 | High Score: 0</p>
+                    </div>
                 </div>
             </div>
    
