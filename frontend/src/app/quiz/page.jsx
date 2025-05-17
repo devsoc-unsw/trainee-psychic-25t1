@@ -1,20 +1,31 @@
 
 "use client"
+import React from 'react';
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
-
+import useMousePosition from "./useMousePosition";
 export default function QuizPage() {
+    const {x,y} = useMousePosition();
+    
+    const [showShape, setShowShape] = React.useState(false)
+
+    function getCoords() {
+        setShowShape(true)
+    }
 
     return (
         <div className="h-full">
             <h1>Hello World</h1>
-            <TransformWrapper>
-                <TransformComponent>
-                    <div className="h-1/2 w-auto">
-                        <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-contain" />
-                    </div>
-                </TransformComponent>
-            </TransformWrapper>
-           
+            <div onClick={getCoords}>
+                <TransformWrapper>
+                    <TransformComponent>
+                        <div className="h-1/2 w-auto">
+                            <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-contain" />
+                        </div>
+                        <div className = "bg-red-500 w-5 h-5 absolute left-[100px] top-[100px]">.</div>
+                    </TransformComponent>
+                </TransformWrapper>
+            </div>
+
         </div>
     )
 
