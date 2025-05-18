@@ -29,7 +29,7 @@ app.config['JWT_COOKIE_SAMESITE'] = 'Lax'         # dev only
 # app.config['JWT_COOKIE_SECURE'] = True          # prod only
 # app.config['JWT_COOKIE_SAMESITE'] = "None"      # prod only
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
-app.config['JWT_COOKIE_CSRF_PROTECT'] = True
+app.config['JWT_COOKIE_CSRF_PROTECT'] = False
 
 # TODO: Change origin according to React Native stuff
 CORS(app, origins=["http://localhost:3000"], supports_credentials=True)

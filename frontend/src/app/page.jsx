@@ -9,7 +9,12 @@ export default function Home() {
   const { auth } = useContext(AuthContext);
 
   if (auth.loading) {
-    return <div>Loading...</div>;
+    return (
+      <div>
+        <Navbar />
+        <h1>Loading...</h1>
+      </div>
+    )
   }
 
   return (

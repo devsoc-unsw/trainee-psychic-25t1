@@ -53,7 +53,7 @@ export default function RegisterPage() {
         { withCredentials: true }
       );
 
-      router.push('/');
+      router.push('/login');
     } catch (err) {
       const msg = err.response?.data?.msg || 'Registration failed.';
       setErrorMsg(msg);
