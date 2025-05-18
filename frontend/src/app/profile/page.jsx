@@ -1,13 +1,10 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-
 export default function ProfilePage() {
-
   return (
     <div   className="hero min-h-screen"
-    style={{
-      backgroundImage:
+      style={{
+        backgroundImage:
         "url(/images/arcade.jpg)",
-    }}>
+      }}>
       <div className="hero-content text-center ">
         <div className="w-[500px]">
           <div className="flex w-full flex-col">
@@ -31,8 +28,8 @@ export default function ProfilePage() {
                   <div className="font-medium">Date Registered:</div>
                 </div>
                 <div className="flex flex-col flex-[1.5] pl-2">
-                  <div>Some game Todo: (modal)</div>
-                  <div>Some score</div>
+                  <div>Snake</div>
+                  <div>100</div>
                   <div>Some date</div>
                 </div>
               </div>
