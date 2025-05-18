@@ -1,6 +1,8 @@
 "use client";
 import React from 'react'; 
 
+import games from "../game/games_info.json";
+
 export default function ProfilePage() {
   function toggleModal() {
     const dialogElement = document.getElementById('my_modal_3');
@@ -13,13 +15,30 @@ export default function ProfilePage() {
     }
   }
 
-  return (
-    <div
-      className="hero min-h-screen"
-      style={{
-        backgroundImage: "url(/images/arcade.jpg)",
-      }}
-    >
+  function GameInfoModal(props) {
+    const {game} = props;
+    return (
+      <>
+        <dialog id="my_modal_3" className="modal">
+          <div className="modal-box">
+            <form method="dialog">
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 className="font-bold text-lg">{game.name}</h3>
+            <p className="py-4">{game.description}</p>
+            <button className="btn btn-primary">Play</button>
+          </div>
+        </dialog>
+      </>
+    );
+  }
+
+  function UserInfo(props) {
+
+    const {game} = props;
+    console.log(games);
+
+    return (
       <div className="hero-content text-center ">
         <div className="w-[500px]">
           <div className="flex w-full flex-col">
@@ -31,10 +50,10 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="leading-7 mb-2 [&:not(:first-child)]:mt-6">
-                  Username
+                Username
                 </p>
                 <p className="text-sm text-zinc-700 leading-none">
-                  email@email.com
+                email@email.com
                 </p>
               </div>
             </div>
@@ -49,7 +68,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col flex-[1.5] pl-2">
                   <div>
                     <a onClick={toggleModal} className="cursor-pointer hover:underline">
-                      Snake
+                    {game.name}
                     </a>
                   </div>
                   <div>100</div>
@@ -60,19 +79,24 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-      
+    );
+  }
 
-      {/* <button className="btn" onClick={()=>document.getElementById('my_modal_3').showModal()}></button> */}
-      <dialog id="my_modal_3" className="modal">
-        <div className="modal-box">
-          <form method="dialog">
-            <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-          </form>
-          <h3 className="font-bold text-lg">Snake Game</h3>
-          <p className="py-4">An awesome snake game</p>
-          <button className="btn btn-primary">Play</button>
-        </div>
-      </dialog>
+  // TODO: find out the player's most played game.
+  const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
+
+  console.log("hi")
+  console.log(mostPlayedGame)
+
+  return (
+    <div
+      className="hero min-h-screen"
+      style={{
+        backgroundImage: "url(/images/arcade.jpg)",
+      }}
+    >
+      <UserInfo game = {mostPlayedGame}/>
+      <GameInfoModal game = {mostPlayedGame}/>
     </div>
   );
 }

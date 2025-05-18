@@ -137,3 +137,33 @@ def get_scores_by_user():
         conn.close()
 
 
+@auth_bp.route('/scores/user/most_played', methods=['GET'])
+@jwt_required()
+def get_most_played_game_by_user():
+    current_user_id = get_jwt_identity()
+
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # query looks cursed but oh well
+        query = """select game_id from (
+            select game_id, count(*) from scores where user_id = %s
+            group by game_id
+        ) where count = (
+            select max(count) from (
+                select game_id, count(*) from scores where user_id = %s
+                group by game_id
+            )
+        )"""
+
+        cursor.execute(query, (current_user_id, current_user_id))
+        most_played_game = cursor.fetchone()
+        conn.commit()
+        return jsonify({most_played_game})
+    except Exception as e:
+        print(f"Error {e}")
+        return jsonify({"msg": "Error"}), 500
+    finally:
+        cursor.close()
+        conn.close()
