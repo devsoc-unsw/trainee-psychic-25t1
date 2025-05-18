@@ -46,7 +46,7 @@ def get_db_connection():
 """
 @auth_bp.route('/auth/register', methods=['POST'])
 def register():
-    # Since this is a POST request, relevant data are stored in the body of the request.
+    # Since this is a POST request, relevant data are stored in the body of the request
     data = request.get_json()
     email = data.get('email')
     password = data.get('password')
@@ -70,21 +70,22 @@ def register():
     # Hash password (obviously because we don't want to store raw passwords in the database)
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    # Now attempt to connect to the database, then insert the new user's details.
+    # Now attempt to connect to the database, then insert the new user's details
     try:
         conn = get_db_connection()
         cursor = conn.cursor()
 
         # Check if email already exists
-        email.strip().lower()
+        email = email.strip().lower()
         cursor.execute("select id from Users where email = %s", (email,))
+        print('checkpoint 2')
         existing_user = cursor.fetchone()
         if existing_user:
             return jsonify({"msg": "Email already exists."}), 409
 
         # Insert the new user
         cursor.execute(
-            "insert into users (email, password, name, age) values (%s, %s, %s, %s)",
+            "insert into Users (email, password, name, age) values (%s, %s, %s, %s)",
             (email, hashed_password, name, age)
         )
         conn.commit()
@@ -141,16 +142,16 @@ def login():
         if not bcrypt.check_password_hash(user['password'], password):
             return jsonify({"msg": "Invalid credentials."}), 401
 
-        # Create JWT token using the user's id as identity.
-        access_token = create_access_token(identity=user['id'])
+        # Create JWT token using the user's id as identity
+        access_token = create_access_token(identity=str(user['id']))
         response = jsonify({"msg": "Login successful."})
-        
-        # Store the JWT token in a secure HttpOnly cookie.
+
+        # Store the JWT token in a secure HttpOnly cookie
         set_access_cookies(response, access_token)
         return response, 200
     except Exception as e:
         print(f"Exception during login: {e}")
-        return jsonify({"msg": "Internal server error."}), 500
+        return jsonify({"msg": f"Internal server error: {e}"}), 500
     finally:
         cursor.close()
         conn.close()
@@ -170,7 +171,7 @@ def login():
     - 500 Internal Server Error: Database or server error
 """
 @auth_bp.route('/auth/status', methods=['GET'])
-@jwt_required()  # This decorator ensures that a valid JWT is present in the cookie.
+@jwt_required()  # This decorator ensures that a valid JWT is present in the cookie
 def status():
     # Retrieve user identity from the JWT
     current_user_id = get_jwt_identity()
