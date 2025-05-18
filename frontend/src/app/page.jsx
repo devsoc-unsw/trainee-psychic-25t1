@@ -25,7 +25,9 @@ export default function Home() {
       {auth.isAuthenticated ? (
         <GameCarousel />
       ) : (
-        <h1>Please log in to continue.</h1>
+        <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
+          <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
+        </div>
       )}
     </div>
   );
