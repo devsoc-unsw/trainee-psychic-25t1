@@ -20,7 +20,7 @@ function shuffle(array) {
     }
 }
 
-shuffle(locations)
+// shuffle(locations)
 
 
 

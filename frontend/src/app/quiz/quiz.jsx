@@ -13,12 +13,14 @@ export default function Quiz(props) {
         const rect = event.currentTarget.getBoundingClientRect();
         const x = event.clientX - rect.left;
         const y = event.clientY - rect.top;
+
+        console.log(x,y)
         setShowShape(true)
         setCoords({x, y})
     }
     
     function updateIndex() {
-        if (locationIndex < 4) {
+        if (locationIndex < locations.length) {
             setLocationIndex(prevIndex => prevIndex + 1)
             setShowShape(false)
         } else {
@@ -32,7 +34,7 @@ export default function Quiz(props) {
                 <div onClick={getCoords}>
                         <TransformWrapper>
                             <TransformComponent>
-                                <img src="/images/kensomap.gif" alt="Kensomap" className="w-full h-full object-fill" />
+                                <img src="/images/campus-map.png" alt="Kensomap" className="w-full h-full object-fill" />
                                         {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px`, transform: 'translate(-50%, -50%)' }}>.</div>}
                             </TransformComponent>
                     </TransformWrapper>
