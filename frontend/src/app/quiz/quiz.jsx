@@ -20,7 +20,7 @@ export default function Quiz(props) {
     }
     
     function updateIndex() {
-        if (locationIndex < locations.length) {
+        if (locationIndex <= locations.length - 1) {
             setLocationIndex(prevIndex => prevIndex + 1)
             setShowShape(false)
         } else {
@@ -42,7 +42,7 @@ export default function Quiz(props) {
                 <div className="divider divider-horizontal"></div>
                 <div className="flex flex-col">
                     <div className='w-[450px] h-[460px]'>
-                        <img className='w-full h-full object-cover' src={locations[locationIndex]}></img>
+                        <img className='w-full h-full object-cover' src={locations[locationIndex].img}></img>
                     </div>
                     <div className='flex flex-col mx-auto mt-4'>
                         {showShape && <button onClick={updateIndex} className="btn btn-primary w-1/2 mb-5">Lock in</button>}

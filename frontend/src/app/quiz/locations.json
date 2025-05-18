@@ -1,12 +1,62 @@
 [
-    "/images/unsw_locations/ainsworth.jpg",
-    "/images/unsw_locations/business_school.jpg",
-    "/images/unsw_locations/clancy_auditorium.jpg",
-    "/images/unsw_locations/goldstein_hall.jpg",
-    "/images/unsw_locations/law_library.jpg",
-    "/images/unsw_locations/main_library.jpeg",
-    "/images/unsw_locations/old-main-buliding.jpeg",
-    "/images/unsw_locations/quadrangle_building.jpg",
-    "/images/unsw_locations/sci_eng_building.jpg",
-    "/images/unsw_locations/tyree_building.jpg"
+    {
+        "name:": "Ainsworth Building",
+        "img": "/images/unsw_locations/ainsworth.jpg",
+        "x": 679, 
+        "y": 353
+    },
+    {
+        "name": "Business Building",
+        "img":  "/images/unsw_locations/business_school.jpg",
+        "x": 515, 
+        "y": 184
+    },
+    {
+        "name": "Clancy Auditorium",
+        "img" : "/images/unsw_locations/clancy_auditorium.jpg",
+        "x": 929, 
+        "y": 135
+    },
+    {
+        "name": "Goldstein Hall",
+        "img" : "/images/unsw_locations/goldstein_hall.jpg",
+        "x": 638, 
+        "y": 148
+    },
+    {
+        "name": "Law Library",
+        "img" : "/images/unsw_locations/law_library.jpg",
+        "x": 330, 
+        "y": 221
+    },
+    {
+        "name": "Library",
+        "img" : "/images/unsw_locations/main_library.jpeg",
+        "x": 829, 
+        "y": 179
+    },
+    {
+        "name": "OMB",
+        "img" : "/images/unsw_locations/old-main-buliding.jpeg",
+        "x": 593, 
+        "y": 370
+    },
+    {
+        "name": "Quad",
+        "img" : "/images/unsw_locations/quadrangle_building.jpg",
+        "x": 598, 
+        "y": 183
+    },
+    {
+        "name": "Hilmer",
+        "img" : "/images/unsw_locations/sci_eng_building.jpg",
+        "x": 324, 
+        "y": 180
+    },
+    {
+        "name": "Tyree",
+        "img" : "/images/unsw_locations/tyree_building.jpg",
+        "x": 250, 
+        "y": 30
+    }
 ]
