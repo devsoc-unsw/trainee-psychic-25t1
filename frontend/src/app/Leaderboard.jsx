@@ -1,4 +1,4 @@
-import LeaderboardPage from "./leaderboard/page"
+import LeaderboardPage from "./leaderboard/page";
 
 export default function LeaderboardModal() {
   return (
@@ -16,5 +16,5 @@ export default function LeaderboardModal() {
         </form>
       </dialog>
     </div>
-  )
+  );
 }

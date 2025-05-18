@@ -35,7 +35,7 @@ export default function GameCarousel() {
   const buttonClick = (slide) => {
     alert("routing to: " + slide.path);
     router.push(slide.path);
-  }
+  };
 
   return (
     <div className="relative overflow-hidden w-full h-full py-20">
