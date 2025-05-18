@@ -12,33 +12,33 @@ export const AuthProvider = ({ children }) => {
     loading: true,
   });
 
+  const checkAuthStatus = async () => {
+    try {
+      const res = await axios.get('http://localhost:8000/auth/status', {
+        withCredentials: true,
+      });
+
+      setAuth({
+        isAuthenticated: true,
+        user: res.data.user,
+        loading: false,
+      });
+    } catch (err) {
+      console.error('Auth check failed:', err.response?.data || err.message);
+      setAuth({
+        isAuthenticated: false,
+        user: null,
+        loading: false,
+      });
+    }
+  };
+
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      try {
-        const res = await axios.get('http://localhost:8000/auth/status', {
-          withCredentials: true,
-        });
-
-        setAuth({
-          isAuthenticated: true,
-          user: res.data.user,
-          loading: false,
-        });
-      } catch (err) {
-        console.error('Auth check failed:', err.response?.data || err.message);
-        setAuth({
-          isAuthenticated: false,
-          user: null,
-          loading: false,
-        });
-      }
-    };
-
     checkAuthStatus();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth, checkAuthStatus }}>
       {children}
     </AuthContext.Provider>
   );

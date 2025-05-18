@@ -15,7 +15,7 @@ export default function Home() {
         <Navbar />
         <h1>Loading...</h1>
       </div>
-    )
+    );
   }
 
   return (

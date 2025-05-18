@@ -7,7 +7,7 @@ import axios from 'axios';
 import Link from 'next/link';
 
 export default function LoginPage() {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { auth, setAuth, checkAuthStatus } = useContext(AuthContext);
   const router = useRouter();
 
   const [email, setEmail] = useState('');
@@ -35,6 +35,7 @@ export default function LoginPage() {
         { withCredentials: true }
       );
 
+      await checkAuthStatus();
       router.push('/');
     } catch (err) {
       const msg = err.response?.data?.msg || 'Login failed.';
