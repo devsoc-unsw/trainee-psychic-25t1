@@ -1,23 +1,32 @@
-"use client"
+'use client';
 
-import Navbar from "./Navbar";
-import LeaderboardModal from "./Leaderboard";
-import GameCarousel from "./GameCarousel";
-import { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { AuthContext } from '@/components/AuthContext';
+import Navbar from './Navbar';
+import LeaderboardModal from './Leaderboard';
+import GameCarousel from './GameCarousel';
 
 export default function Home() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const { auth } = useContext(AuthContext);
 
-  useEffect(() => {
-    // somehow check if logged in
-  }, [])
+  if (auth.loading) {
+    return (
+      <div>
+        <Navbar />
+        <h1>Loading...</h1>
+      </div>
+    )
+  }
 
   return (
     <div>
       <Navbar />
       <LeaderboardModal />
-      {/* <h1>Home</h1> */}
-      <GameCarousel />
+      {auth.isAuthenticated ? (
+        <GameCarousel />
+      ) : (
+        <h1>Please log in to continue.</h1>
+      )}
     </div>
   );
 }
