@@ -2,6 +2,7 @@
 
 import Navbar from "./Navbar";
 import LeaderboardModal from "./Leaderboard";
+import GameCarousel from "./GameCarousel";
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -13,9 +14,10 @@ export default function Home() {
 
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       <LeaderboardModal />
       {/* <h1>Home</h1> */}
+      <GameCarousel />
     </div>
   );
 }
