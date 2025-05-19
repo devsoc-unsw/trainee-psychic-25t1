@@ -68,7 +68,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col flex-[1.5] pl-2">
                   <div>
                     <a onClick={toggleModal} className="cursor-pointer hover:underline">
-                    {game.name}
+                      {game.name}
                     </a>
                   </div>
                   <div>100</div>
@@ -86,8 +86,8 @@ export default function ProfilePage() {
   // make a call to the backend to get the player's most played game.
   const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
 
-  console.log("hi")
-  console.log(mostPlayedGame)
+  console.log("hi");
+  console.log(mostPlayedGame);
 
   return (
     <div

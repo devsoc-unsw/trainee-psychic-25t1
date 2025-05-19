@@ -1,53 +1,101 @@
-'use client'
+'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import L from 'leaflet'; // some weird error here - to do with having to dynamically load
 
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 
-export default function Quiz({locations}) {
+export default function Quiz(props) {
+
+  const {locations} = props;
   const unswCoordinates = [-33.9173, 151.2313];
-  const bounds = [[unswCoordinates], [unswCoordinates]];
-  // idt these bounds are correct - it still lets you zoom out 
-  const icon = L.icon({ iconUrl: "/images/marker-icon.png" });
+
+  const [icon, setIcon] = useState(null);
+  // Player's guess marker position
   const [markerPosition, setMarkerPosition] = useState(unswCoordinates);
-  const [showShape, setShowShape] = useState(false);
+
+  // State for the correct answer marker
+  const [answerMarkerPosition, setAnswerMarkerPosition] = useState(null); 
+  const [showAnswerMarker, setShowAnswerMarker] = useState(false); 
+
+  const [showShape, setShowShape] = useState(false); 
   const [locationIndex, setLocationIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [answerReveal, setAnswerReveal ] = useState(false);
 
-  // need to reimplement logic for how to calculate score now that you only have
-  // exact coordinates
+  useEffect(() => {
+    const L = require('leaflet');
+    setIcon(L.icon({ iconUrl: "/images/marker-icon.png" }));
+  }, []);
 
-  // bc we're using lat + lng, need to modify json file to work with this asw 
-  const setCoordinates = (e) => {
+
+  const handleMarkerDragEnd = (e) => {
     const marker = e.target;
     const newPosition = marker.getLatLng();
     setMarkerPosition([newPosition.lat, newPosition.lng]);
-    console.log(newPosition)
+    setShowShape(true); 
+    setShowAnswerMarker(false); 
+    setAnswerMarkerPosition(null);
+  };
 
-    setShowShape(true);
+  // Called by "Lock in & Next" button - advances the quiz
+  function updateIndex() {
+    if (locations && locationIndex < locations.length - 1) {
+      setLocationIndex(prevIndex => prevIndex + 1);
+      setShowShape(false); 
+      setShowAnswerMarker(false); 
+      setAnswerMarkerPosition(null); 
+    } else {
+      console.log("Game over or no more locations!");
+      setShowShape(false); 
+      setShowAnswerMarker(false);
+    }
   }
 
 
-  function updateIndex() {
-    if (locationIndex <= locations.length - 1) {
-      setLocationIndex(prevIndex => prevIndex + 1);
-      setShowShape(false);
+  function startNextRound() {
+    setAnswerReveal(false);
+    updateIndex();
+  }
+
+  // Called by a "Reveal Location" button - shows the correct answer marker
+  function revealTrueLocation() { // Renamed to avoid confusion
+    if (!locations || !locations[locationIndex]) {
+      console.error("Locations data is not available.");
+      return;
+    }
+    const currentLoc = locations[locationIndex];
+
+    if (currentLoc && typeof currentLoc.x === 'number' && typeof currentLoc.y === 'number') {
+      if (answerReveal) return;
+
+      setAnswerMarkerPosition([currentLoc.x, currentLoc.y]);
+      setShowAnswerMarker(true);
+      setAnswerReveal(true);
     } else {
-      console.log("game over!");
+      console.error("Could not find coordinates for location index:", locationIndex, "or data is malformed.");
     }
   }
 
   function MyComponent() {
     useMapEvents({
       click: (e) => {
+
+        if (answerReveal) return;
+        
         const { lat, lng } = e.latlng;
-        console.log(`Map clicked at: Latitude: ${lat}, Longitude: ${lng}`);
-        setMarkerPosition([lat, lng])
+        console.log(`Player guessed at: Latitude: ${lat}, Longitude: ${lng}`);
+        setMarkerPosition([lat, lng]); 
+        setShowShape(true); 
+        setShowAnswerMarker(false); 
+        setAnswerMarkerPosition(null); 
       },
-    })
-    return null
+    });
+    return null;
+  }
+
+  if (!icon) {
+    return <div>Loading map resources...</div>;
   }
 
   return (
@@ -57,19 +105,50 @@ export default function Quiz({locations}) {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           attribution="&copy; OpenStreetMap contributors"
         />
-        <Marker draggable={true} eventHandlers={{dragend: setCoordinates}} icon={icon} position={markerPosition} />
+        {markerPosition && (
+          <Marker
+            draggable={true}
+            eventHandlers={{dragend: handleMarkerDragEnd}}
+            icon={icon}
+            position={markerPosition}
+          />
+        )}
+
+        {showAnswerMarker && answerMarkerPosition && (
+          <Marker
+            icon={icon} 
+            position={answerMarkerPosition}
+            draggable={false}
+          />
+        )}
         <MyComponent />
       </MapContainer>
       <div className="divider divider-horizontal"></div>
-        <div className="flex flex-col">
-        <div>
-          <img className='w-full h-full object-cover' src={locations[locationIndex].img}></img>
+      <div className="flex flex-col">
+        <div className="mb-4">
+          {(locations && locations[locationIndex]) ? (
+            <img
+              className='w-[800px] h-[500px] object-cover mx-auto'
+              src={locations[locationIndex].img}
+              alt={`Location ${locationIndex + 1}`}
+            />
+          ) : (
+            <div className='w-[400px] h-[300px] flex items-center justify-center bg-gray-200 text-gray-500 mx-auto'>
+              <p>No image to display or end of quiz.</p>
+            </div>
+          )}
         </div>
-        <div className='flex flex-col mx-auto mt-4'>
-          {showShape && <button onClick={updateIndex} className="btn btn-primary w-1/2 mb-5">Lock in</button>}
+        <div className='flex flex-col items-center mx-auto mt-4'>
+          {locations && locations.length > 0 && !showAnswerMarker &&
+            <button onClick={revealTrueLocation} className="btn btn-secondary w-1/2 mb-5">Lock In</button>
+          }
+          {
+            answerReveal &&
+            <button onClick={startNextRound} className="btn btn-primary w-full mb-5">Start next round</button>
+          }
           <p>Score: {score} | High Score: 0</p>
         </div>
       </div>
     </div>
-  )
+  );
 }
