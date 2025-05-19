@@ -3,7 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-function GameHandler({setCorrectWord, setGuessCurr, setGuesses}) {
+function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
   const [game, setGame] = React.useState(0);
 
   // New Game: set new word
@@ -31,7 +31,7 @@ function GameHandler({setCorrectWord, setGuessCurr, setGuesses}) {
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     }
-  }, [])
+  }, [guessCurr])
 
   // Update current guess
   const checkValidUpdate = (c) => {
@@ -45,12 +45,8 @@ function GameHandler({setCorrectWord, setGuessCurr, setGuesses}) {
 
   // Handle enter
   const checkValidEnter = () => {
-    let temp;
-    setGuessCurr(prevGuess => {
-      temp = prevGuess;
-      return "";
-    });
-    setGuesses(prev => [...prev, temp]);
+    setGuesses(prev => [...prev, guessCurr]);
+    setGuessCurr("");
   }
 
   // Retrieve word from database

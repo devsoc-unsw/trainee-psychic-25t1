@@ -40,7 +40,7 @@ export default function WorldeGameBoard() {
           </div>
         )
       })}
-      <GameHandler setCorrectWord={setCorrectWord} setGuessCurr={setGuessCurr} setGuesses={setGuesses}/>
+      <GameHandler setCorrectWord={setCorrectWord} setGuessCurr={setGuessCurr} guessCurr={guessCurr} setGuesses={setGuesses}/>
       {"correct word: " + correctWord}
     </div>
   );

@@ -2,7 +2,7 @@
 
 // Prints 5 tiles which can each contain a letter
 export default function Guess({correctWord, guess, display}) {
-  if (correctWord === null) return null;
+  if (correctWord === null || correctWord === undefined) return null;
 
   return (
     <div className="grid grid-cols-5 gap-2 mb-2">
