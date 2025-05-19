@@ -13,7 +13,6 @@ export default function Wordle() {
     return (
       <div>
         <Navbar />
-        <h1>Loading...</h1>
       </div>
     );
   }
