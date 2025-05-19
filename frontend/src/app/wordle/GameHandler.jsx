@@ -42,6 +42,7 @@ export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, se
   // Handle backspace
   const checkValidBackspace = () => {
     setGuessCurr(prev => prev.length > 0 ? prev.slice(0, -1) : prev);
+    setAlertShow(false);
   }
 
   // Handle enter

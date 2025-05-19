@@ -3,16 +3,20 @@
 import "./styles.css"
 
 // Tile Component
-function Tile({ letter, colour, flip, index }) {
-  const delay = `${index * 0.2}s`;
+function Tile({ letter, colour, flip, index, shake }) {
+  const delayFlip = `${index * 0.2}s`;
+  const delayShake = `${index * 0.1}s`;
 
   return (
-    <div className={`tile-container ${flip ? "flip" : ""}`} style={{ animationDelay: delay }}>
-      <div className="tile front bg-black text-white" style={{ animationDelay: delay }}>
+    <div
+      className={`tile-container ${flip ? "flip" : ""} ${shake ? "shake" : ""}`}
+      style={{ animationDelay: delayShake }}
+    >
+      <div className="tile front bg-black text-white" style={{ animationDelay: delayFlip }}>
         {letter}
       </div>
 
-      <div className={`tile back ${colour} text-white`} style={{ animationDelay: delay }}>
+      <div className={`tile back ${colour} text-white`} style={{ animationDelay: delayFlip }}>
         {letter}
       </div>
     </div>
@@ -20,8 +24,9 @@ function Tile({ letter, colour, flip, index }) {
 }
 
 
+
 // Prints 5 tiles which can each contain a letter
-export default function Guess({correctWord, guess, display}) {
+export default function Guess({correctWord, guess, display, shake}) {
   if (correctWord === null || correctWord === undefined) return null;
 
   return (
@@ -34,7 +39,7 @@ export default function Guess({correctWord, guess, display}) {
           "bg-gray-600"
 
         return (
-          <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i}/>
+          <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i} shake={shake}/>
         )
       })}
     </div> 
