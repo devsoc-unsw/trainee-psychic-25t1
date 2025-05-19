@@ -1,5 +1,6 @@
 "use client"
 
+// Prints 5 tiles which can each contain a letter
 export default function Guess({correctWord, guess, display}) {
   if (!correctWord) return null;
   

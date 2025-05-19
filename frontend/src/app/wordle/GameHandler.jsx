@@ -29,11 +29,8 @@ function GameHandler({setCorrectWord}) {
     setCorrectWord(words[Math.trunc(Math.random() * words.length)]);
   }
 
-
-  
   return (
-    <div>
-    </div>
+    <></>
   )
 }
 

@@ -9,6 +9,7 @@ import WordleGameBoard from './WordleGameBoard';
 export default function Wordle() {
   const { auth } = useContext(AuthContext);
 
+  // Check logged in
   if (auth.loading) {
     return (
       <div>
@@ -17,6 +18,7 @@ export default function Wordle() {
     );
   }
 
+  // Display WordleGameBoard if logged in
   return (
     <div>
       <Navbar />
