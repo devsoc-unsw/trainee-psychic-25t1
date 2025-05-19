@@ -3,7 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-function GameHandler() {
+function GameHandler({}) {
   const [word, setWord] = React.useState(null);
   const [game, setGame] = React.useState(0);
 

@@ -1,5 +1,5 @@
 "use client";
-import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
+import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import Guess from "./Guess";
 import GameHandler from "./GameHandler";
 export default function WorldeGameBoard() {
@@ -11,9 +11,9 @@ export default function WorldeGameBoard() {
   ];
   return (
     <div className="flex flex-col items-center justify-center h-[90vh]  ">
-      <TypewriterEffectSmooth words={words} />
+      <TypewriterEffect words={words} />
       <br/>
-      <Guess guess={"Guess"}/>
+      <Guess correctWord={"abcde"} guess={"guess"} display={true}/>
       <GameHandler />
     </div>
   );
