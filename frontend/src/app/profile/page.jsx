@@ -83,6 +83,7 @@ export default function ProfilePage() {
   }
 
   // TODO: find out the player's most played game.
+  // make a call to the backend to get the player's most played game.
   const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
 
   console.log("hi")

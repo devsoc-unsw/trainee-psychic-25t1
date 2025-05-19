@@ -4,7 +4,7 @@ import { useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet'; // some weird error here - to do with having to dynamically load
 
-import { MapContainer, TileLayer, Marker} from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 
 export default function Quiz({locations}) {
   const unswCoordinates = [-33.9173, 151.2313];
@@ -29,6 +29,7 @@ export default function Quiz({locations}) {
     setShowShape(true);
   }
 
+
   function updateIndex() {
     if (locationIndex <= locations.length - 1) {
       setLocationIndex(prevIndex => prevIndex + 1);
@@ -36,6 +37,17 @@ export default function Quiz({locations}) {
     } else {
       console.log("game over!");
     }
+  }
+
+  function MyComponent() {
+    useMapEvents({
+      click: (e) => {
+        const { lat, lng } = e.latlng;
+        console.log(`Map clicked at: Latitude: ${lat}, Longitude: ${lng}`);
+        // set the thing
+      },
+    })
+    return null
   }
 
   return (
@@ -46,6 +58,7 @@ export default function Quiz({locations}) {
           attribution="&copy; OpenStreetMap contributors"
         />
         <Marker draggable={true} eventHandlers={{dragend: setCoordinates}} icon={icon} position={markerPosition} />
+        <MyComponent />
       </MapContainer>
       <div className="divider divider-horizontal"></div>
         <div className="flex flex-col">
@@ -60,61 +73,3 @@ export default function Quiz({locations}) {
     </div>
   )
 }
-
-// export default function Quiz({ locations }) {
-//   const [showShape, setShowShape] = useState(false);
-//   const [coords, setCoords] = useState({undefined, undefined});
-//   const [locationIndex, setLocationIndex] = useState(0);
-//   const [score, setScore] = useState(0);
-
-//   function getCoords(event, state) {
-//     const rect = event.currentTarget.getBoundingClientRect();
-//     let x = event.clientX - rect.left;
-//     let y = event.clientY - rect.top;
-  
-//     if (state) {
-//       x = (x - state.positionX) / state.scale;
-//       y = (y - state.positionY) / state.scale;
-//     }
-  
-//     console.log(x,y)
-//     setShowShape(true)
-//     setCoords({x, y})
-//   }
-    
-//   function updateIndex() {
-//     if (locationIndex <= locations.length - 1) {
-//       setLocationIndex(prevIndex => prevIndex + 1)
-//       setShowShape(false)
-//     } else {
-//       console.log("game over!")
-//     }
-//   }
-
-
-//   return (
-//     <div className="flex justify-center items-center h-screen">
-//         {/* <div onClick={getCoords}> */}
-        
-//           <TransformWrapper>
-//               <TransformComponent>
-//                 <div onClick={(e) => getCoords(e, state)}>
-//                   <img src="/images/campus-map.png" alt="kensington map" className="w-full h-full object-contain" />
-//                   {showShape && <div className="bg-red-500 w-5 h-5 absolute" style={{ left: `${coords.x}px`, top: `${coords.y}px`, transform: 'translate(-50%, -50%)' }}>.</div>}
-//                 </div>
-//               </TransformComponent>
-//           </TransformWrapper>
-//         {/* </div> */}
-        // <div className="divider divider-horizontal"></div>
-        // <div className="flex flex-col">
-        //   <div>
-        //       <img className='w-full h-full object-cover' src={locations[locationIndex].img}></img>
-        //   </div>
-        //   <div className='flex flex-col mx-auto mt-4'>
-        //       {showShape && <button onClick={updateIndex} className="btn btn-primary w-1/2 mb-5">Lock in</button>}
-        //       <p>Score: {score} | High Score: 0</p>
-        //   </div>
-        // </div>
-//     </div>
-//   )
-// }
