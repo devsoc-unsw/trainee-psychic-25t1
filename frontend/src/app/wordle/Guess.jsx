@@ -4,7 +4,7 @@ export default function Guess({correctWord, guess, display}) {
   if (!correctWord) return null;
   
   return (
-    <div className="grid grid-cols-5 gap-2">
+    <div className="grid grid-cols-5 gap-2 mb-2">
       {new Array(5).fill("").map((_, i) => {
         const colour = 
           !display ? "bg-black" :

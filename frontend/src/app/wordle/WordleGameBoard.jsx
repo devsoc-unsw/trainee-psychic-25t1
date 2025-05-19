@@ -20,6 +20,11 @@ export default function WorldeGameBoard() {
       <TypewriterEffect words={words} />
       <br/>
       <Guess correctWord={correctWord} guess={"guess"} display={true}/>
+      <Guess correctWord={correctWord} guess={"guess"} display={true}/>
+      <Guess correctWord={correctWord} guess={"guess"} display={true}/>
+      <Guess correctWord={correctWord} guess={"guess"} display={true}/>
+      <Guess correctWord={correctWord} guess={"guess"} display={true}/>
+      <Guess correctWord={correctWord} guess={"guess"} display={true}/>
       <GameHandler setCorrectWord={setCorrectWord}/>
       {"correct word: " + correctWord}
     </div>
