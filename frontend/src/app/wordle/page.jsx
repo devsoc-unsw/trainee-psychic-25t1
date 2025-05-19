@@ -23,7 +23,9 @@ export default function Wordle() {
       <Navbar />
       <LeaderboardModal />
       {auth.isAuthenticated ? (
-        <WordleGameBoard />
+        <>  
+          <WordleGameBoard />
+        </>
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
