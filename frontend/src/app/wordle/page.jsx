@@ -2,11 +2,11 @@
 
 import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
-import Navbar from './Navbar';
-import LeaderboardModal from './Leaderboard';
-import GameCarousel from './GameCarousel';
+import Navbar from '../Navbar';
+import LeaderboardModal from '../Leaderboard';
+import WordleGameBoard from './WordleGameBoard';
 
-export default function Home() {
+export default function Wordle() {
   const { auth } = useContext(AuthContext);
 
   if (auth.loading) {
@@ -22,8 +22,8 @@ export default function Home() {
     <div>
       <Navbar />
       <LeaderboardModal />
-      {auth.isAuthenticated ? ( // REMOVE !
-        <GameCarousel />
+      {auth.isAuthenticated ? (
+        <WordleGameBoard />
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>

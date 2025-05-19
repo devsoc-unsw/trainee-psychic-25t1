@@ -7,10 +7,10 @@ export default function GameCarousel() {
 
   const slideData = [
     {
-      title: "Mystic Mountains",
+      title: "Wordle",
       button: "Play Game",
       src: "https://images.unsplash.com/photo-1494806812796-244fe51b774d?q=80&w=3534&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-      path: "/game1"
+      path: "/wordle"
     },
     {
       title: "Urban Dreams",
@@ -33,7 +33,6 @@ export default function GameCarousel() {
   ];
 
   const buttonClick = (slide) => {
-    alert("routing to: " + slide.path);
     router.push(slide.path);
   };
 
