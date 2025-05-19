@@ -53,6 +53,11 @@ export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, se
       setAlertShow(true);
       return;
     }
+    if (!words.includes(guessCurr)) {
+      setAlert("Not in word list");
+      setAlertShow(true);
+      return;
+    }
     setGuesses(prev => [...prev, guessCurr]);
     setGuessCurr("");
     setAlertShow(false);

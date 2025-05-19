@@ -11,7 +11,7 @@ export default function WorldeGameBoard() {
   const [guesses, setGuesses] = React.useState([]);
   const [guessCurr, setGuessCurr] = React.useState("");
   const [alert, setAlert] = React.useState("");
-  const [alertShow, setAlertShow] = React.useState("");
+  const [alertShow, setAlertShow] = React.useState(""); // this extra state variable is needed for animation
 
   // Data for animated title
   const words = [
