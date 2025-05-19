@@ -3,7 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
+export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses, setAlert, setAlertShow}) {
   const [game, setGame] = React.useState(0);
 
   // New Game: set new word
@@ -36,6 +36,7 @@ function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
   // Update current guess
   const checkValidUpdate = (c) => {
     setGuessCurr(prev => prev.length < 5 ? prev + c : prev);
+    setAlertShow(false);
   }
 
   // Handle backspace
@@ -46,8 +47,14 @@ function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
   // Handle enter
   const checkValidEnter = () => {
     // ADD extra conditions (win | lose | real word | word length)
+    if (guessCurr.length != 5) {
+      setAlert("Not enough letters");
+      setAlertShow(true);
+      return;
+    }
     setGuesses(prev => [...prev, guessCurr]);
     setGuessCurr("");
+    setAlertShow(false);
   }
 
   // Retrieve word from database
@@ -59,5 +66,3 @@ function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
     <></>
   )
 }
-
-export default GameHandler
