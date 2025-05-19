@@ -7,8 +7,8 @@ import GameHandler from "./GameHandler";
 
 export default function WorldeGameBoard() {
   const [correctWord, setCorrectWord] = React.useState(null);
-  const [guesses, setGuesses] = React.useState(["hstry"]); // set back to empty array
-  const [guessCurr, setGuessCurr] = React.useState(""); // set back to ""
+  const [guesses, setGuesses] = React.useState([]);
+  const [guessCurr, setGuessCurr] = React.useState("");
 
   // Data for animated title
   const words = [
@@ -40,7 +40,7 @@ export default function WorldeGameBoard() {
           </div>
         )
       })}
-      <GameHandler setCorrectWord={setCorrectWord} setGuessCurr={setGuessCurr}/>
+      <GameHandler setCorrectWord={setCorrectWord} setGuessCurr={setGuessCurr} setGuesses={setGuesses}/>
       {"correct word: " + correctWord}
     </div>
   );
