@@ -3,8 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-function GameHandler({}) {
-  const [word, setWord] = React.useState(null);
+function GameHandler({setCorrectWord}) {
   const [game, setGame] = React.useState(0);
 
   // New Game
@@ -13,12 +12,11 @@ function GameHandler({}) {
   }, [game])
 
   const getWord = () => {
-    setWord(words[Math.trunc(Math.random() * words.length)]);
+    setCorrectWord(words[Math.trunc(Math.random() * words.length)]);
   }
   
   return (
     <div>
-      {word}
     </div>
   )
 }
