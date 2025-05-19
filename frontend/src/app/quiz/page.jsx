@@ -1,8 +1,8 @@
 
-"use client"
+"use client";
 import React from 'react';
 import Quiz from './quiz';
-import locations from "./locations.json"
+import locations from "./locations.json";
 
 function shuffle(array) {
   let currentIndex = array.length;

@@ -51,7 +51,7 @@ export default function Navbar() {
 
       <div className="navbar-end hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-        <li><a onClick={() => router.push('/')}>HOME</a></li>
+          <li><a onClick={() => router.push('/')}>HOME</a></li>
           <li><a onClick={() => document.getElementById('leaderboardModal').showModal()}>LEADERBOARD</a></li>
           {auth.isAuthenticated ? (
             <>
