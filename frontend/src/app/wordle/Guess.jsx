@@ -1,5 +1,25 @@
 "use client"
 
+import "./styles.css"
+
+// Tile Component
+function Tile({ letter, colour, flip, index }) {
+  const delay = `${index * 0.2}s`;
+
+  return (
+    <div className={`tile-container ${flip ? "flip" : ""}`} style={{ animationDelay: delay }}>
+      <div className="tile front bg-black text-white" style={{ animationDelay: delay }}>
+        {letter}
+      </div>
+
+      <div className={`tile back ${colour} text-white`} style={{ animationDelay: delay }}>
+        {letter}
+      </div>
+    </div>
+  );
+}
+
+
 // Prints 5 tiles which can each contain a letter
 export default function Guess({correctWord, guess, display}) {
   if (correctWord === null || correctWord === undefined) return null;
@@ -14,9 +34,7 @@ export default function Guess({correctWord, guess, display}) {
           "bg-gray-600"
 
         return (
-          <div key={i} className={`h-16 w-16 uppercase flex items-center justify-center text-white text-lg font-bold ${colour}`}>
-            {guess[i]}
-          </div>
+          <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i}/>
         )
       })}
     </div> 

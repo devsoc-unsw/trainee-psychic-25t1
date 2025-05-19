@@ -45,7 +45,7 @@ function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses}) {
 
   // Handle enter
   const checkValidEnter = () => {
-    // ADD extra conditions
+    // ADD extra conditions (win | lose | real word | word length)
     setGuesses(prev => [...prev, guessCurr]);
     setGuessCurr("");
   }
