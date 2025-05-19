@@ -44,7 +44,7 @@ export default function Quiz({locations}) {
       click: (e) => {
         const { lat, lng } = e.latlng;
         console.log(`Map clicked at: Latitude: ${lat}, Longitude: ${lng}`);
-        // set the thing
+        setMarkerPosition([lat, lng])
       },
     })
     return null
