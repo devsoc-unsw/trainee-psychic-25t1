@@ -36,7 +36,7 @@ export default function WorldeGameBoard() {
 
         return (
           <div key={i}>
-            <Guess correctWord={correctWord} guess={temp} display={true}/>
+            <Guess correctWord={correctWord} guess={temp} display={i < guesses.length ? true : false}/>
           </div>
         )
       })}
