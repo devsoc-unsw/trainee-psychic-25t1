@@ -8,12 +8,12 @@ export default function Guess({correctWord, guess, display}) {
       {new Array(5).fill("").map((_, i) => {
         const colour = 
           !display ? "bg-black" :
-          correctWord[i] == guess[i] ? "bg-gree-400" :
-          correctWord.includes(guess[i]) ? "bg-yellow-400" :
+          correctWord[i] == guess[i] ? "bg-green-600" :
+          correctWord.includes(guess[i]) ? "bg-yellow-500" :
           "bg-gray-600"
 
         return (
-          <div key={i} className={`h-16 w-16 uppercase flex items-center justify-center text-white ${colour}`}>
+          <div key={i} className={`h-16 w-16 uppercase flex items-center justify-center text-white text-lg font-bold ${colour}`}>
             {guess[i]}
           </div>
         )
