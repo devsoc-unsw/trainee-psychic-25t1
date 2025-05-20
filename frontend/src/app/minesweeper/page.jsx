@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const NUM_ROWS = 8;
 const NUM_COLS = 8;
@@ -41,7 +41,7 @@ function createBoard() {
 
   for (const coords of mines) {
     const [x, y] = coords;
-    myArray[x][y] = {'value': 1, 'revealed': false}; 
+    myArray[x][y] = {'value': 1, 'revealed': false, 'flagged': false}; 
   }
 
   function countAdjacentMines(i, j) {
@@ -95,7 +95,7 @@ function createBoard() {
   return myArray;
 }
 
-function displayBoard(board, handleClick) {
+function displayBoard(board, clickTile , flagMine) {
   const theBoard = [];
 
  
@@ -109,18 +109,22 @@ function displayBoard(board, handleClick) {
 
       // mines
       if (cur.value === 1) {
-        theBoard.push(<div key={uniqueKey} id={cellId} className="btn btn-error">MINE</div>);
+        if (!cur.flagged) {
+          theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-error">MINE</div>);
+        } else {
+          theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error">MINE</div>);
+        }
       } 
       // non-mines
       else {
         if (cur.revealed) {
           if (cur.numMines === 0) {
-            theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => handleClick(i, j)} className="btn btn-soft btn-success">{board[i][j].numMines}</div>);
+            theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success"></div>);
           } else {
-            theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => handleClick(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+            theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
           }
         } else {
-          theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => handleClick(i, j)} className="btn btn-success">{board[i][j].numMines}</div>);
+          theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-success">{board[i][j].numMines}</div>);
         }
       }
     }
@@ -134,15 +138,22 @@ export default function MineSweeperPage() {
 
   const [board, setBoard] = useState(createBoard());
 
-  function handleClick(row, col) {
-    const newBoard = JSON.parse(JSON.stringify(board)); 
+  function clickTile(row, col) {
 
+    const newBoard = JSON.parse(JSON.stringify(board)); 
+    if (newBoard[row][col].value === 1) {
+      console.log("game over!");
+      return;
+    }
     const queue = [];
 
     // console.log("supp");
     if (newBoard[row][col].numMines === 0) {
       // console.log("hi");
       queue.push(newBoard[row][col]);
+    } else {
+      newBoard[row][col].revealed = true;
+      setBoard(newBoard);
     }
 
     function addNeighbours(r, c, queue) {
@@ -226,7 +237,29 @@ export default function MineSweeperPage() {
     setBoard(newBoard);
   }
 
-  const boardUI = displayBoard(board, handleClick);
+  function flagMine(row, col, event) {
+    event.preventDefault();
+
+    const newBoard = JSON.parse(JSON.stringify(board));
+
+    newBoard[row][col].flagged = true;
+
+    setBoard(newBoard);
+
+  };
+
+  const boardUI = displayBoard(board, clickTile, flagMine);
+
+  useEffect(() => {
+    const cellsWithNoAdjacentMines = board.flat().filter(cell => cell.value === 0 && cell.numMines === 0);
+  
+    const allRevealed = cellsWithNoAdjacentMines.every(cell => cell.revealed);
+  
+    if (allRevealed) {
+      alert("You won!");
+    }
+  }, [board]);
+
 
   return (
     <>
