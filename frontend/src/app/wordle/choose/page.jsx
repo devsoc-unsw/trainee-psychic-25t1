@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
 import Navbar from '../../Navbar';
 import LeaderboardModal from '../../Leaderboard';
-import ChooseCarousel from './ChooseCarousel';
+import Choose from './Choose';
 
 export default function Home() {
   const { auth } = useContext(AuthContext);
@@ -22,7 +22,7 @@ export default function Home() {
       <Navbar />
       <LeaderboardModal />
       {auth.isAuthenticated ? ( 
-        <ChooseCarousel />
+        <Choose />
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
