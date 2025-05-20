@@ -36,15 +36,35 @@ export default function SnakeGame() {
     const ctx = canvas.getContext("2d");
     ctxRef.current = ctx; 
 
-    ctx.fillStyle = BOARDBACKGROUND;
-    ctx.fillRect(0, 0, gameWidth, gameHeight);
+    // ctx.fillStyle = BOARDBACKGROUND;
+    // ctx.fillRect(0, 0, gameWidth, gameHeight);
 
-    const newFoodPosition = createFood();
-
-    drawFood(newFoodPosition);
+    gameStart();
+   
 
   }, []); 
+ 
 
+  useEffect(() => {
+    if (running) {
+      nextTick();
+    }
+    
+    
+  }, [running]); 
+  function gameStart() {
+    const ctx = ctxRef.current;
+
+    if (ctx) {
+      ctx.fillStyle = BOARDBACKGROUND;
+      ctx.fillRect(0, 0, gameWidth, gameHeight);
+    }
+
+    const newFoodPosition = createFood();
+    drawFood(newFoodPosition);
+    nextTick();
+    setRunning(true);
+  }
 
   function createFood() {
     function getRandomGridCoordinate(boardDimension) {
@@ -77,9 +97,51 @@ export default function SnakeGame() {
     ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
     ctx.strokeRect(x, y, UNITSIZE, UNITSIZE);
   }
+  
+  function nextTick() {
+    if (running) {
+      setTimeout(() => {
+        clearBoard();
+        drawFood();
+        moveSnake();
+        drawSnake();
+        checkGameOver();
+        nextTick();
+      }, 75);
+    } else {
+      displayGameOver();
+    }
+  }
+
+  function clearBoard(){
+    const ctx = ctxRef.current; 
+    if (!ctx) return;
+    ctx.fillStyle = BOARDBACKGROUND;
+    ctx.fillRect(0, 0, gameWidth, gameHeight);
+  }
+
+  function moveSnake(){}
+
+  function drawSnake() {
+    const ctx = ctxRef.current;
+    ctx.fillStyle = SNAKECOLOR;
+    ctx.strokeStyle = SNAKEBORDER;
+    snake.forEach(snakePart => {
+      ctx.fillRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
+      ctx.strokeRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
+    });
+  }
 
   function changeDirection(e) {
     console.log('Key pressed:', e.key);
+  }
+
+  function checkGameOver() {
+
+  }
+
+  function displayGameOver() {
+
   }
 
   return (
