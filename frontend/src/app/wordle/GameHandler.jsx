@@ -4,7 +4,7 @@ import React from 'react'
 import words from './words.json'
 import common from './common.json'
 
-export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow}) {
+export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow, setButtonShow}) {
 
   // New Game: set new word
   React.useEffect(() => {
@@ -73,10 +73,16 @@ export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, 
     setAlertShow(false);
     if(guessCurr === correctWord) {
       setWinState("win");
-      setTimeout(() => {setPopupShow(true)}, 1800);
+      setTimeout(() => {
+        setPopupShow(true);
+        setButtonShow(true);
+      }, 1800);
     } else if(guesses.length === 5) {
       setWinState("lose");
-      setTimeout(() => {setPopupShow(true)}, 1800);
+      setTimeout(() => {
+        setPopupShow(true);
+        setButtonShow(true);
+      }, 1800);
     }
   }
 
