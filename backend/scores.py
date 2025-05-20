@@ -16,7 +16,7 @@ CONFIG = {
     'database': os.getenv('DB_NAME')
 }
 
-auth_bp = Blueprint('auth', __name__)
+score_bp = Blueprint('score', __name__)
 bcrypt = Bcrypt()
 
 # Black magic which connects to database
@@ -39,7 +39,7 @@ def get_db_connection():
     - 404 Not Found: No game_id found with the given game_id
     - 500 Internal Server Error: Database or server error
 """
-@auth_bp.route('/scores/upload', methods=['POST'])
+@score_bp.route('/scores/upload', methods=['POST'])
 @jwt_required()
 def upload_score():
     current_user_id = get_jwt_identity()
@@ -76,7 +76,7 @@ def upload_score():
         cursor.close()
         conn.close()
 
-@auth_bp.route('/scores/game', methods=['GET'])
+@score_bp.route('/scores/game', methods=['GET'])
 @jwt_required()
 def get_scores_by_game():
     # current_user_id = get_jwt_identity()
@@ -113,7 +113,7 @@ def get_scores_by_game():
         cursor.close()
         conn.close()
 
-@auth_bp.route('/scores/user', methods=['GET'])
+@score_bp.route('/scores/user', methods=['GET'])
 @jwt_required()
 def get_scores_by_user():
     current_user_id = get_jwt_identity()
@@ -123,9 +123,9 @@ def get_scores_by_user():
         cursor = conn.cursor()
 
         # fetch all of the scores related to the user
-        query = """select * from Scores where user_id = %s"""
+        query = """select SUM(score) from Scores where user_id = %s"""
         cursor.execute(query, (current_user_id, ))
-        scores = cursor.fetchall()
+        scores = cursor.fetchone()[0] or 0
         conn.commit()
         return jsonify({scores})
 
@@ -137,7 +137,7 @@ def get_scores_by_user():
         conn.close()
 
 
-@auth_bp.route('/scores/user/most_played', methods=['GET'])
+@score_bp.route('/scores/user/most_played', methods=['GET'])
 @jwt_required()
 def get_most_played_game_by_user():
     current_user_id = get_jwt_identity()
