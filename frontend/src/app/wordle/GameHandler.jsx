@@ -3,7 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState}) {
+export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow}) {
   const [game, setGame] = React.useState(0);
 
   // New Game: set new word
@@ -71,8 +71,10 @@ export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, 
     setAlertShow(false);
     if(guessCurr === correctWord) {
       setWinState("win");
+      setTimeout(() => {setPopupShow(true)}, 1800);
     } else if(guesses.length === 5) {
       setWinState("lose");
+      setTimeout(() => {setPopupShow(true)}, 1800);
     }
   }
 

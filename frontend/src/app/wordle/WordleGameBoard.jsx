@@ -5,6 +5,7 @@ import { TypewriterEffect } from "@/components/ui/typewriter-effect";
 import Guess from "./Guess";
 import GameHandler from "./GameHandler";
 import Alert from "./Alert";
+import Popup from "./Popup";
 
 export default function WorldeGameBoard() {
   const [correctWord, setCorrectWord] = React.useState(null);
@@ -12,7 +13,8 @@ export default function WorldeGameBoard() {
   const [guessCurr, setGuessCurr] = React.useState("");
   const [winState, setWinState] = React.useState("play");
   const [alert, setAlert] = React.useState("");
-  const [alertShow, setAlertShow] = React.useState(""); // this extra state variable is needed for animation
+  const [alertShow, setAlertShow] = React.useState(false);
+  const [popupShow, setPopupShow] = React.useState(false);
 
   // Data for animated title
   const words = [
@@ -44,11 +46,26 @@ export default function WorldeGameBoard() {
           </div>
         )
       })}
-      <GameHandler setCorrectWord={setCorrectWord} correctWord={correctWord} setGuessCurr={setGuessCurr} guessCurr={guessCurr} setGuesses={setGuesses} guesses={guesses} setAlert={setAlert} setAlertShow={setAlertShow} winState={winState} setWinState={setWinState}/>
+      <GameHandler 
+        setCorrectWord={setCorrectWord} 
+        correctWord={correctWord} 
+        setGuessCurr={setGuessCurr} 
+        guessCurr={guessCurr} 
+        setGuesses={setGuesses} 
+        guesses={guesses} 
+        setAlert={setAlert} 
+        setAlertShow={setAlertShow} 
+        winState={winState} 
+        setWinState={setWinState}
+        setPopupShow={setPopupShow}
+      />
       {"correct word: " + correctWord}
 
       <div className={`fixed bottom-10 transition-opacity duration-500 ${alertShow ? 'opacity-100' : 'opacity-0'}`}>
         <Alert message={alert} />
+      </div>
+      <div className={`fixed bottom-10 transition-opacity duration-500 ${popupShow ? 'opacity-100' : 'opacity-0'}`}>
+        <Popup display={popupShow} close={() => setPopupShow(false)} content={"Sample Text Blah Blah"} />
       </div>
     </div>
   );
