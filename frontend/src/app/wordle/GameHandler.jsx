@@ -3,7 +3,7 @@
 import React from 'react'
 import words from './words.json'
 
-export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, setGuesses, setAlert, setAlertShow}) {
+export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState}) {
   const [game, setGame] = React.useState(0);
 
   // New Game: set new word
@@ -35,20 +35,28 @@ export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, se
 
   // Update current guess
   const checkValidUpdate = (c) => {
+    if (winState !== "play") {
+      return;
+    }
     setGuessCurr(prev => prev.length < 5 ? prev + c : prev);
     setAlertShow(false);
   }
 
   // Handle backspace
   const checkValidBackspace = () => {
+    if (winState !== "play") {
+      return;
+    }
     setGuessCurr(prev => prev.length > 0 ? prev.slice(0, -1) : prev);
     setAlertShow(false);
   }
 
   // Handle enter
   const checkValidEnter = () => {
-    // ADD extra conditions (win | lose | real word | word length)
-    if (guessCurr.length != 5) {
+    if (winState !== "play") {
+      return;
+    }
+    if (guessCurr.length !== 5) {
       setAlert("Not enough letters");
       setAlertShow(true);
       return;
@@ -61,6 +69,11 @@ export default function GameHandler({setCorrectWord, setGuessCurr, guessCurr, se
     setGuesses(prev => [...prev, guessCurr]);
     setGuessCurr("");
     setAlertShow(false);
+    if(guessCurr === correctWord) {
+      setWinState("win");
+    } else if(guesses.length === 5) {
+      setWinState("lose");
+    }
   }
 
   // Retrieve word from database

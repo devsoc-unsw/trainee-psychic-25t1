@@ -10,6 +10,7 @@ export default function WorldeGameBoard() {
   const [correctWord, setCorrectWord] = React.useState(null);
   const [guesses, setGuesses] = React.useState([]);
   const [guessCurr, setGuessCurr] = React.useState("");
+  const [winState, setWinState] = React.useState("play");
   const [alert, setAlert] = React.useState("");
   const [alertShow, setAlertShow] = React.useState(""); // this extra state variable is needed for animation
 
@@ -31,20 +32,19 @@ export default function WorldeGameBoard() {
   return (
     <div className="flex flex-col items-center justify-center h-[90vh]  ">
       <TypewriterEffect words={words} />
-      <br/>
+      <br/><br/>
       {new Array(6).fill("").map((_, i) => {
         const temp = 
           i === guesses.length ? guessCurr :
           i < guesses.length ? guesses[i] :
           "";
-
         return (
           <div key={i}>
             <Guess correctWord={correctWord} guess={temp} display={i < guesses.length ? true : false} shake={alertShow && i === guesses.length}/>
           </div>
         )
       })}
-      <GameHandler setCorrectWord={setCorrectWord} setGuessCurr={setGuessCurr} guessCurr={guessCurr} setGuesses={setGuesses} setAlert={setAlert} setAlertShow={setAlertShow}/>
+      <GameHandler setCorrectWord={setCorrectWord} correctWord={correctWord} setGuessCurr={setGuessCurr} guessCurr={guessCurr} setGuesses={setGuesses} guesses={guesses} setAlert={setAlert} setAlertShow={setAlertShow} winState={winState} setWinState={setWinState}/>
       {"correct word: " + correctWord}
 
       <div className={`fixed bottom-10 transition-opacity duration-500 ${alertShow ? 'opacity-100' : 'opacity-0'}`}>
