@@ -20,7 +20,10 @@ export default function Popup({ display, close, winState, correctWord }) {
       </>
     ) : winState === "play" ? (
       <>
-        <span className="text-lg text-center block">Temp</span>
+        <h1 className="text-4xl font-extrabold mb-4 text-center">
+          New Round
+        </h1>
+        <span className="text-lg text-center block">Can you solve the next one ?</span>
       </>
     ) : (
       <span className="text-center block">Something went wrong.</span>

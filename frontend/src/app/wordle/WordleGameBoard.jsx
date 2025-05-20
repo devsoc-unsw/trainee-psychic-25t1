@@ -70,7 +70,6 @@ export default function WorldeGameBoard() {
         setPopupShow={setPopupShow}
         setButtonShow={setButtonShow}
       />
-  {correctWord}
       <div className={`fixed bottom-10 transition-opacity duration-500 ${alertShow ? 'opacity-100' : 'opacity-0'}`}>
         <Alert message={alert} />
       </div>
