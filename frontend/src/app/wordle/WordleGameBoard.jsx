@@ -16,15 +16,13 @@ export default function WorldeGameBoard() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [popupShow, setPopupShow] = React.useState(false);
   const [buttonShow, setButtonShow] = React.useState(false);
-  const [clickedToStart, setClickedToStart] = React.useState(false);
 
   const resetData = () => {
-    setPopupShow(false);
     setGuessCurr("");
     setGuesses([]);
     setWinState("play");
+    setPopupShow(true);
     setButtonShow(false);
-    setClickedToStart(false);
   }
 
   // Data for animated title
@@ -44,60 +42,45 @@ export default function WorldeGameBoard() {
    * <Popup>: Popup Display 
    */
   return (
-    <div className="flex flex-col items-center justify-center h-[90vh]">
+    <div className="flex flex-col items-center justify-center h-[90vh]  ">
       <TypewriterEffect words={words} />
       <br/><br/>
-      {!clickedToStart && (
-        <div
-          className="fixed inset-0 bg-transparent z-50 cursor-pointer"
-          onClick={() => setClickedToStart(true)}
-        >
-          <div className="flex items-center justify-center h-full">
-            <span className="text-white text-lg bg-black/50 px-4 py-2 rounded-md">
-              Click to start
-            </span>
+      {new Array(6).fill("").map((_, i) => {
+        const temp = 
+          i === guesses.length ? guessCurr :
+          i < guesses.length ? guesses[i] :
+          "";
+        return (
+          <div key={i}>
+            <Guess correctWord={correctWord} guess={temp} display={(i < guesses.length) ? true : false} shake={alertShow && i === guesses.length}/>
           </div>
-        </div>
-      )}
-
-      <div className={`flex flex-col items-center justify-center ${!clickedToStart ? "invisible" : "visible"}`}> 
-        {new Array(6).fill("").map((_, i) => {
-          const temp = 
-            i === guesses.length ? guessCurr :
-            i < guesses.length ? guesses[i] :
-            "";
-          return (
-            <div key={i}>
-              <Guess correctWord={correctWord} guess={temp} display={(i < guesses.length) ? true : false} shake={alertShow && i === guesses.length}/>
-            </div>
-          )
-        })}
-        <GameHandler 
-          setCorrectWord={setCorrectWord} 
-          correctWord={correctWord} 
-          setGuessCurr={setGuessCurr} 
-          guessCurr={guessCurr} 
-          setGuesses={setGuesses} 
-          guesses={guesses} 
-          setAlert={setAlert} 
-          setAlertShow={setAlertShow} 
-          winState={winState} 
-          setWinState={setWinState}
-          setPopupShow={setPopupShow}
-          setButtonShow={setButtonShow}
-        />
-        {correctWord}
-        <div className={`fixed bottom-10 transition-opacity duration-500 ${alertShow ? 'opacity-100' : 'opacity-0'}`}>
-          <Alert message={alert} />
-        </div>
-        <div className={`fixed bottom-10 transition-opacity duration-500 ${buttonShow ? 'opacity-100' : 'opacity-0'}`}>
-          <button onClick={resetData} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md">
-            Play Again
-          </button>
-        </div>
-        <div className={`fixed bottom-10 transition-opacity duration-500 ${popupShow ? 'opacity-100' : 'opacity-0'}`}>
-          <Popup display={popupShow} close={() => setPopupShow(false)} winState={winState} correctWord={correctWord} />
-        </div>
+        )
+      })}
+      <GameHandler 
+        setCorrectWord={setCorrectWord} 
+        correctWord={correctWord} 
+        setGuessCurr={setGuessCurr} 
+        guessCurr={guessCurr} 
+        setGuesses={setGuesses} 
+        guesses={guesses} 
+        setAlert={setAlert} 
+        setAlertShow={setAlertShow} 
+        winState={winState} 
+        setWinState={setWinState}
+        setPopupShow={setPopupShow}
+        setButtonShow={setButtonShow}
+      />
+  {correctWord}
+      <div className={`fixed bottom-10 transition-opacity duration-500 ${alertShow ? 'opacity-100' : 'opacity-0'}`}>
+        <Alert message={alert} />
+      </div>
+      <div className={`fixed bottom-10 transition-opacity duration-500 ${buttonShow ? 'opacity-100' : 'opacity-0'}`}>
+        <button onClick={resetData} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md">
+          Play Again
+        </button>
+      </div>
+      <div className={`fixed bottom-10 transition-opacity duration-500 ${popupShow ? 'opacity-100' : 'opacity-0'}`}>
+        <Popup display={popupShow} close={() => setPopupShow(false)} winState={winState} correctWord={correctWord} />
       </div>
     </div>
   );

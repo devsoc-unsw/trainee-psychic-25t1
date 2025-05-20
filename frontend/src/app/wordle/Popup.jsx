@@ -18,9 +18,13 @@ export default function Popup({ display, close, winState, correctWord }) {
         </h1>
         <span className="text-lg text-center block">Better luck next time!</span>
       </>
+    ) : winState === "play" ? (
+      <>
+        <span className="text-lg text-center block">Temp</span>
+      </>
     ) : (
       <span className="text-center block">Something went wrong.</span>
-    );
+    ) ;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
