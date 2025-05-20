@@ -16,6 +16,14 @@ export default function WorldeGameBoard() {
   const [alertShow, setAlertShow] = React.useState(false);
   const [popupShow, setPopupShow] = React.useState(false);
 
+  const resetData = () => {
+    setAlertShow(false);
+    setPopupShow(false);
+    setGuessCurr("");
+    setGuesses([]);
+    setWinState("play");
+  }
+
   // Data for animated title
   const words = [
     {
@@ -30,6 +38,7 @@ export default function WorldeGameBoard() {
    * <Guess>: A 1x5 grid for displaying a guess
    * <GameHandler>: Handles Game Logic
    * <Alert>: Alert Display
+   * <Popup>: Popup Display 
    */
   return (
     <div className="flex flex-col items-center justify-center h-[90vh]  ">
@@ -42,7 +51,7 @@ export default function WorldeGameBoard() {
           "";
         return (
           <div key={i}>
-            <Guess correctWord={correctWord} guess={temp} display={i < guesses.length ? true : false} shake={alertShow && i === guesses.length}/>
+            <Guess correctWord={correctWord} guess={temp} display={(i < guesses.length) ? true : false} shake={alertShow && i === guesses.length}/>
           </div>
         )
       })}
@@ -66,6 +75,11 @@ export default function WorldeGameBoard() {
       </div>
       <div className={`fixed bottom-10 transition-opacity duration-500 ${popupShow ? 'opacity-100' : 'opacity-0'}`}>
         <Popup display={popupShow} close={() => setPopupShow(false)} content={"Sample Text Blah Blah"} />
+      </div>
+      <div className={`fixed bottom-10 transition-opacity duration-500 ${winState != "play" ? 'opacity-100' : 'opacity-0'}`}>
+        <button onClick={resetData} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md">
+          Play Again
+        </button>
       </div>
     </div>
   );

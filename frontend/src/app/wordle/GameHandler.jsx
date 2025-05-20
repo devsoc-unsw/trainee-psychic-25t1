@@ -4,12 +4,13 @@ import React from 'react'
 import words from './words.json'
 
 export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow}) {
-  const [game, setGame] = React.useState(0);
 
   // New Game: set new word
   React.useEffect(() => {
-    getWord();
-  }, [game])
+    if (winState === "play") {
+      getWord();
+    }
+  }, [winState])
 
   // Mount keyboard listener
   React.useEffect(() => {
@@ -31,7 +32,7 @@ export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     }
-  }, [guessCurr])
+  }, [guessCurr, winState])
 
   // Update current guess
   const checkValidUpdate = (c) => {
