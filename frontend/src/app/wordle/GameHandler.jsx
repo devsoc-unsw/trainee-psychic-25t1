@@ -5,7 +5,6 @@ import words from './words.json'
 import common from './common.json'
 
 export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow, setButtonShow}) {
-
   // New Game: set new word
   React.useEffect(() => {
     if (winState === "play") {
@@ -33,7 +32,7 @@ export default function GameHandler({setCorrectWord, correctWord, setGuessCurr, 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
     }
-  }, [guessCurr, winState])
+  }, [guessCurr, winState, guesses])
 
   // Update current guess
   const checkValidUpdate = (c) => {
