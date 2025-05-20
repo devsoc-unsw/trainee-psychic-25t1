@@ -43,7 +43,7 @@ function createBoard() {
 }
 
 function displayBoard(board) {
-  const lol = [];
+  const theBoard = [];
 
   function checkAdjacent(i, j) {
     let numMines = 0;
@@ -87,26 +87,37 @@ function displayBoard(board) {
 
     return numMines;
   }
+  
+  function handleClick(event) {
+    const buttonElement = event.target;
 
+    const buttonText = buttonElement.textContent;
+    console.log(buttonText);
+    const clickedId = event.currentTarget.id;
+    console.log(`Button with ID: ${clickedId} was clicked.`);
+  }
 
+  
   for (let i = 0; i < 10; i++) {
     for (let j = 0; j < 10; j++) {
+      const uniqueKey = `${i}-${j}`;
+      const cellId = `cell-${i}-${j}`;
       if (board[i][j] === 1) {
-        lol.push(<div className="btn btn-warning">MINE</div>);
+        theBoard.push(<div key={uniqueKey} id={cellId} className="btn btn-warning">MINE</div>);
       } else {
-        lol.push(<div className="btn btn-success">{checkAdjacent(i, j)}</div>);
+        theBoard.push(<div key={uniqueKey} id={cellId} onClick={handleClick} className="btn btn-success">{checkAdjacent(i, j)}</div>);
       }
     }
   }
 
-  return lol;
+  return theBoard;
 }
 
 
 export default function MineSweeperPage() {
 
   const board = createBoard();
-  console.log(board);
+  // console.log(board);
   const theBoard = displayBoard(board);
 
   return (
