@@ -24,10 +24,10 @@ function Tile({letter, colour, flip, index, shake}) {
 }
 
 // Get Lie Colour
-const getLieColour = (colour) => {
+const getLieColour = (colour, index) => {
   const colours = ["bg-green-600", "bg-yellow-500", "bg-gray-600"];
   const wrongColours = colours.filter(c => c !== colour);
-  return wrongColours[Math.floor(Math.random() * wrongColours.length)];
+  return wrongColours[index % 2];
 }
 
 // Prints 5 tiles which can each contain a letter
@@ -47,7 +47,7 @@ export default function Guess({version, customRow, correctWord, guess, display, 
           version === "blindle" && customRow[i] ? 
           <Tile key={i} letter={"X"} colour={"bg-black"} flip={display} index={i} shake={shake}/> :
           version === "liedle" && customRow[i] ? 
-          <Tile key={i} letter={guess[i]} colour={getLieColour(colour)} flip={display} index={i} shake={shake}/> :
+          <Tile key={i} letter={guess[i]} colour={getLieColour(colour, i)} flip={display} index={i} shake={shake}/> :
           <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i} shake={shake}/>
         )
       })}
