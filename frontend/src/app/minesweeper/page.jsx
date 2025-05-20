@@ -6,6 +6,7 @@ function createBoard() {
   const cols = 10;
 
   const myArray = [];
+  
 
   for (let i = 0; i < rows; i++) {
     myArray[i] = [];
@@ -36,19 +37,40 @@ function createBoard() {
     myArray[x][y] = 1;
   }
 
-  console.log(myArray);
-
+  // debugging
+  // console.log(myArray);
+  return myArray;
 }
 
+function displayBoard(board) {
+  const lol = [];
+
+  for (let i = 0; i < 10; i++) {
+    for (let j = 0; j < 10; j++) {
+      let buttonStyle = '';
+      if (board[i][j] === 1) {
+        lol.push(<div className="btn btn-warning">MINE</div>);
+      } else {
+        lol.push(<div className="btn btn-success">SAFE</div>);
+      }
+    }
+  }
+
+  return lol;
+}
 
 
 export default function MineSweeperPage() {
 
-  createBoard();
+  const board = createBoard();
+  console.log(board);
+  const theBoard = displayBoard(board);
 
   return (
     <>
-      <h1>Mine sweeper</h1>
+      <div className="grid grid-cols-10">
+        {theBoard}
+      </div>
     </>
   );
 }
