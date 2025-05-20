@@ -2,9 +2,9 @@
 
 import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
-import Navbar from '../Navbar';
-import LeaderboardModal from '../Leaderboard';
-import WordleGameBoard from './WordleGameBoard';
+import Navbar from '../../Navbar';
+import LeaderboardModal from '../../Leaderboard';
+import WordleGameBoard from '../WordleGameBoard';
 
 export default function Wordle() {
   const { auth } = useContext(AuthContext);
@@ -25,7 +25,7 @@ export default function Wordle() {
       <LeaderboardModal />
       {auth.isAuthenticated ? (
         <>  
-          <WordleGameBoard version={"wordle"} />
+          <WordleGameBoard version={"hardle"} />
         </>
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">

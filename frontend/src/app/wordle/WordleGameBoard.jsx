@@ -7,7 +7,7 @@ import GameHandler from "./GameHandler";
 import Alert from "./Alert";
 import Popup from "./Popup";
 
-export default function WorldeGameBoard() {
+export default function WorldeGameBoard({version}) {
   const [correctWord, setCorrectWord] = React.useState(null);
   const [guesses, setGuesses] = React.useState([]);
   const [guessCurr, setGuessCurr] = React.useState("");
@@ -28,7 +28,7 @@ export default function WorldeGameBoard() {
   // Data for animated title
   const words = [
     {
-      text: "wordle",
+      text: version,
       className: "text-6xl font-bold uppercase",
     },
   ];
@@ -57,6 +57,7 @@ export default function WorldeGameBoard() {
         )
       })}
       <GameHandler 
+        version={version}
         setCorrectWord={setCorrectWord} 
         correctWord={correctWord} 
         setGuessCurr={setGuessCurr} 
