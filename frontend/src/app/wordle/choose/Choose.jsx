@@ -4,6 +4,9 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
 import wordleImage from "@/app/wordle/choose/assets/Wordle.png"
+import hardleImage from "@/app/wordle/choose/assets/Hardle.png"
+import blindleImage from "@/app/wordle/choose/assets/Blindle.png"
+import liedleImage from "@/app/wordle/choose/assets/Liedle.png"
 import Image from "next/image";
 
 export default function Choose() {
@@ -236,7 +239,7 @@ const cards = [
   {
     description: "Wordle with Harder Words",
     title: "Hardle",
-    src: wordleImage,
+    src: hardleImage,
     ctaText: "Visit",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
@@ -258,7 +261,7 @@ const cards = [
   {
     description: "Wordle with Blind Tiles",
     title: "Blindle",
-    src: wordleImage,
+    src: blindleImage,
     ctaText: "Visit",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {
@@ -279,7 +282,7 @@ const cards = [
   {
     description: "Lord Himesh",
     title: "Liedle",
-    src: wordleImage,
+    src: liedleImage,
     ctaText: "Visit",
     ctaLink: "https://ui.aceternity.com/templates",
     content: () => {

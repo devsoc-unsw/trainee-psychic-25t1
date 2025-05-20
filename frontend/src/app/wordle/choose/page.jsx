@@ -22,7 +22,10 @@ export default function Home() {
       <Navbar />
       <LeaderboardModal />
       {auth.isAuthenticated ? ( 
-        <Choose />
+        <>
+          <br/><br/>
+          <Choose />
+        </>
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
