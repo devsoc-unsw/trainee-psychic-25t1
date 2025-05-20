@@ -8,6 +8,7 @@ import Alert from "./Alert";
 import Popup from "./Popup";
 
 export default function WorldeGameBoard({version}) {
+  const BLINDLE_DIFFICULTY_MOD = 6; // smaller number is harder
   const [correctWord, setCorrectWord] = React.useState(null);
   const [guesses, setGuesses] = React.useState([]);
   const [guessCurr, setGuessCurr] = React.useState("");
@@ -16,7 +17,7 @@ export default function WorldeGameBoard({version}) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [popupShow, setPopupShow] = React.useState(false);
   const [buttonShow, setButtonShow] = React.useState(false);
-  const [blindleBoard, setBlindleBoard] = React.useState(null);
+  const [customBoard, setCustomBoard] = React.useState(null);
 
   const resetData = () => {
     setGuessCurr("");
@@ -25,16 +26,28 @@ export default function WorldeGameBoard({version}) {
     setPopupShow(true);
     setButtonShow(false);
     initBlindBoard();
+    initLiedleBoard();
   }
 
   // blindle board init
   const initBlindBoard = () => {
+    if (version !== "blindle") return;
     const temp = Array.from({ length: 6 }, () =>
-      Array.from({ length: 5 }, () => Math.floor(Math.random() * 7) === 0)
+      Array.from({length: 5}, () => Math.floor(Math.random() * BLINDLE_DIFFICULTY_MOD) === 0)
     );
-    setBlindleBoard(temp);
+    setCustomBoard(temp);
   }
   React.useEffect(initBlindBoard, []);
+
+  // liedle board init
+  const initLiedleBoard = () => {
+    if (version !== "liedle") return;
+    const temp = Array.from({length: 6}, () => {
+      const randIndex = Math.floor(Math.random() * 5);
+      return Array.from({length: 5}, (_, i) => i === randIndex)});
+    setCustomBoard(temp);
+  }
+  React.useEffect(initLiedleBoard, []);
   
   // Data for animated title
   const words = [
@@ -65,7 +78,7 @@ export default function WorldeGameBoard({version}) {
           <div key={i}>
             <Guess 
               version={version} 
-              blindRow={blindleBoard ? blindleBoard[i] : null} 
+              customRow={customBoard ? customBoard[i] : null} 
               correctWord={correctWord} 
               guess={temp} 
               display={(i < guesses.length) ? true : false} 
