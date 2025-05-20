@@ -25,7 +25,7 @@ export default function Wordle() {
       <LeaderboardModal />
       {auth.isAuthenticated ? (
         <>  
-          <WordleGameBoard />
+          <WordleGameBoard version={"wordle"} />
         </>
       ) : (
         <div className="flex justify-center items-center h-[calc(100vh-4rem)]">
