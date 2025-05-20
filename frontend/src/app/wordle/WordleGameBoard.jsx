@@ -16,6 +16,7 @@ export default function WorldeGameBoard({version}) {
   const [alertShow, setAlertShow] = React.useState(false);
   const [popupShow, setPopupShow] = React.useState(false);
   const [buttonShow, setButtonShow] = React.useState(false);
+  const [blindleBoard, setBlindleBoard] = React.useState(null);
 
   const resetData = () => {
     setGuessCurr("");
@@ -23,8 +24,18 @@ export default function WorldeGameBoard({version}) {
     setWinState("play");
     setPopupShow(true);
     setButtonShow(false);
+    initBlindBoard();
   }
 
+  // blindle board init
+  const initBlindBoard = () => {
+    const temp = Array.from({ length: 6 }, () =>
+      Array.from({ length: 5 }, () => Math.floor(Math.random() * 7) === 0)
+    );
+    setBlindleBoard(temp);
+  }
+  React.useEffect(initBlindBoard, []);
+  
   // Data for animated title
   const words = [
     {
@@ -52,7 +63,14 @@ export default function WorldeGameBoard({version}) {
           "";
         return (
           <div key={i}>
-            <Guess correctWord={correctWord} guess={temp} display={(i < guesses.length) ? true : false} shake={alertShow && i === guesses.length}/>
+            <Guess 
+              version={version} 
+              blindRow={blindleBoard ? blindleBoard[i] : null} 
+              correctWord={correctWord} 
+              guess={temp} 
+              display={(i < guesses.length) ? true : false} 
+              shake={alertShow && i === guesses.length}
+            />
           </div>
         )
       })}
