@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 const NUM_ROWS = 8;
 const NUM_COLS = 8;
 
-
+const NUM_MINES = 10;
 
 
 
@@ -35,7 +35,7 @@ export default function MineSweeperPage() {
 
     function getMineCoords() {
 
-      while (mines.size < NUM_ROWS) {
+      while (mines.size < NUM_MINES) {
         const x = Math.floor(Math.random() * max);
         const y = Math.floor(Math.random() * max);
         const coords = [x,y];
