@@ -51,54 +51,6 @@ export default function MineSweeperPage() {
       myArray[x][y] = {'bomb': true, 'revealed': false, 'flagged': false}; 
     }
 
-    function countAdjacentMines(i, j) {
-      let numMines = 0;
-      if (i > 0 && myArray[i - 1][j].bomb === true) {
-        numMines++;
-      } 
-      // check j > 0
-      if (j > 0 && myArray[i][j - 1].bomb === true) {
-        numMines++;
-      } 
-      // check that its not within the maxbound
-      if (i < NUM_ROWS - 1 && myArray[i + 1][j].bomb === true) {
-        numMines++;
-      } 
-      // check y coord is not within the max bound.
-      if (j < NUM_COLS - 1 && myArray[i][j + 1].bomb === true) {
-        numMines++;
-      }
-
-      // check diagonals
-      // top left diagonal
-      if (i > 0 && j > 0 && myArray[i-1][j-1].bomb === true) {
-        numMines++;
-      }
-
-      // top right diagonal
-      if (i < NUM_COLS - 1 && j > 0 && myArray[i+1][j-1].bomb === true) {
-        numMines++;
-      }
-
-      // bottom left diagonal
-      if (i > 0 && j < NUM_COLS - 1 && myArray[i-1][j+1].bomb === true) {
-        numMines++;
-      }
-
-      // bottom right diagonal
-      if (i < NUM_COLS - 1 && j < NUM_COLS - 1 && myArray[i+1][j+1].bomb === true) {
-        numMines++;
-      }
-      return numMines;
-    }
-
-    for (let i = 0; i < NUM_ROWS; i++) {
-      for (let j = 0; j < NUM_ROWS; j++) {
-        myArray[i][j].numMines = countAdjacentMines(i, j);
-      }
-    }
-    // debugging
-    // console.log(myArray);
     return myArray;
   }
 
@@ -114,27 +66,56 @@ export default function MineSweeperPage() {
       
         const cur = board[i][j];
 
-        // mines
-        if (cur.flagged) {
-          theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
-        } else {
-          // is a bomb
-          // if (cur.bomb === true) {
-          //   theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-error">MINE</div>);
-          // } 
-          // else {
-          if (cur.revealed) {
-            if (cur.numMines === 0) {
-              theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success"></div>);
+        // this is what the player will see
+        function gameMode() {
+          if (cur.flagged) {
+            theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
+          } 
+          else {
+            if (cur.revealed) {
+              if (cur.bomb) {
+                theBoard.push(<div key={uniqueKey} id={cellId} className="btn btn-error">MINE</div>);
+              }
+              else {
+                if (cur.numMines === 0) {
+                  theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success"></div>);
+                } else {
+                  theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+                }
+              }
+
             } else {
-              theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+              theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-info"></div>);
             }
-          } else {
-            theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-info"></div>);
-            // theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-success">{board[i][j].numMines}</div>);
           }
-          // }
         }
+
+        // for debugging, liek when you want to see where the mines
+        // are placed on the map
+        function debugMode() {
+          // check if its flagged
+          if (cur.flagged) {
+            theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
+          } 
+          else {
+            if (cur.bomb) {
+              if (cur.revealed) {
+                theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-success">MINE</div>);
+              } else {                
+                theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-error">MINE</div>);
+              }
+            } else {
+              if (cur.revealed) {
+                theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+              }
+              else {
+                theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success">{board[i][j].numMines}</div>);
+              }
+            }
+          } 
+        }
+
+        gameMode();
       }
     }
 
@@ -143,26 +124,94 @@ export default function MineSweeperPage() {
 
 
   const [board, setBoard] = useState(createBoard());
-  
+  const [firstMoveMade, setFirstMoveMade] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
 
   function clickTile(row, col) {
-
     if (!gameRunning) return;
 
     const newBoard = JSON.parse(JSON.stringify(board)); 
+
+    function countAdjacentMines(i, j) {
+      let numMines = 0;
+      if (i > 0 && newBoard[i - 1][j].bomb === true) {
+        numMines++;
+      } 
+      // check j > 0
+      if (j > 0 && newBoard[i][j - 1].bomb === true) {
+        numMines++;
+      } 
+      // check that its not within the maxbound
+      if (i < NUM_ROWS - 1 && newBoard[i + 1][j].bomb === true) {
+        numMines++;
+      } 
+      // check y coord is not within the max bound.
+      if (j < NUM_COLS - 1 && newBoard[i][j + 1].bomb === true) {
+        numMines++;
+      }
+
+      // check diagonals
+      // top left diagonal
+      if (i > 0 && j > 0 && newBoard[i-1][j-1].bomb === true) {
+        numMines++;
+      }
+
+      // top right diagonal
+      if (i < NUM_COLS - 1 && j > 0 && newBoard[i+1][j-1].bomb === true) {
+        numMines++;
+      }
+
+      // bottom left diagonal
+      if (i > 0 && j < NUM_COLS - 1 && newBoard[i-1][j+1].bomb === true) {
+        numMines++;
+      }
+
+      // bottom right diagonal
+      if (i < NUM_COLS - 1 && j < NUM_COLS - 1 && newBoard[i+1][j+1].bomb === true) {
+        numMines++;
+      }
+      return numMines;
+    }
+
+    for (let i = 0; i < NUM_ROWS; i++) {
+      for (let j = 0; j < NUM_ROWS; j++) {
+        newBoard[i][j].numMines = countAdjacentMines(i, j);
+      }
+    }
+
+    setBoard(newBoard);
+
+    function relocateMine(board, r, c) {
+      while (true) {
+        const x = Math.floor(Math.random() * NUM_ROWS);
+        const y = Math.floor(Math.random() * NUM_COLS);
+
+        if (!board[x][y].bomb) {
+          board[x][y].bomb = true;
+          break;
+        }
+      }
+      board[r][c].bomb = false;
+      return board;
+    }
+
     if (newBoard[row][col].bomb === true) {
-      setGameRunning(false);
-      setGameOver(true);
-      console.log("game over!");
+      let bombBoard;
+      if (!firstMoveMade) {
+        bombBoard = relocateMine(newBoard, row, col);
+        setFirstMoveMade(true);
+      } else { 
+        bombBoard = revealMines(board);
+        setGameRunning(false);
+        setGameOver(true);
+      }
+      setBoard(bombBoard);
       return;
     }
     const queue = [];
 
-    // console.log("supp");
     if (newBoard[row][col].numMines === 0) {
-      // console.log("hi");
       queue.push(newBoard[row][col]);
     } else {
       newBoard[row][col].revealed = true;
@@ -247,12 +296,17 @@ export default function MineSweeperPage() {
       reviewNeighbours(x,y);
     }
 
+    if (!firstMoveMade) {
+      setFirstMoveMade(true);
+    }
+
     setBoard(newBoard);
   }
 
   function flagMine(row, col, event) {
     if (!gameRunning) return;
     event.preventDefault();
+    if (!firstMoveMade) return;
 
     const newBoard = JSON.parse(JSON.stringify(board));
 
@@ -264,6 +318,17 @@ export default function MineSweeperPage() {
 
   const boardUI = displayBoard(board, clickTile, flagMine);
 
+  function revealMines(board) {
+    for (let i = 0; i < NUM_ROWS; i++) {
+      for (let j = 0; j < NUM_COLS; j++) {
+        if (board[i][j].bomb) {
+          board[i][j].revealed = true;
+        }
+      }
+    }
+    return board;
+  }
+
   useEffect(() => {
     if (!gameRunning) return;
     const cellsWithNoAdjacentMines = board.flat().filter(cell => cell.bomb === false);
@@ -271,6 +336,8 @@ export default function MineSweeperPage() {
     const allRevealed = cellsWithNoAdjacentMines.every(cell => cell.revealed);
   
     if (allRevealed) {
+      // reveal mines here
+      setBoard(revealMines(board));
       setGameRunning(false);
       setGameWin(true);
     }
