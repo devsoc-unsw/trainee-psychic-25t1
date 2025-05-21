@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 
 // Constants
 const BOARDBACKGROUND = 'white';
@@ -9,6 +10,7 @@ const SNAKEBORDER = 'black';
 const FOODCOLOR = 'red';
 const UNITSIZE = 25;
 const GAME_SPEED = 100;
+const GAME_ID = 2;
 
 export default function SnakeGame() {
   const [running, setRunning] = useState(false);
@@ -67,6 +69,7 @@ export default function SnakeGame() {
     drawSnake();
     if (!runningRef.current && (score > 0 || snake.length > 0 )) {
       displayGameOver();
+      uploadGameScore(score);
     }
   }, [snake, food, running, score]);
 
@@ -216,6 +219,20 @@ export default function SnakeGame() {
     ctx.fillStyle = "black";
     ctx.textAlign = "center";
     ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
+  }
+
+  async function uploadGameScore(score) {
+    if (score > 0) {
+      try {
+        await axios.post(
+          'http://localhost:8000/scores/upload',
+          { game_id: GAME_ID, score },
+          { withCredentials: true }
+        );
+      } catch(error) {
+        console.error("Failed to upload score: ", error)
+      }
+    } 
   }
 
   return (

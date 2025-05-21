@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager
 from auth import auth_bp
+from scores import score_bp
 import os
 
 load_dotenv()
@@ -37,6 +38,7 @@ CORS(app, origins=["http://localhost:3000"], supports_credentials=True)
 # Register 'blueprints', which are modularised code
 # Check auth.py for an example
 app.register_blueprint(auth_bp)
+app.register_blueprint(score_bp)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8000)))
