@@ -13,7 +13,7 @@ export default function MineSweeperPage() {
   const [gameRunning, setGameRunning] = useState(true);
   
   function createBoard() {
-    if (!gameRunning) return;
+    // if (!gameRunning) return;
 
     const myArray = [];
 
@@ -55,8 +55,6 @@ export default function MineSweeperPage() {
   }
 
   function displayBoard(board, clickTile , flagMine) {
-
-
     const theBoard = [];
   
     for (let i = 0; i < NUM_ROWS; i++) {
@@ -115,7 +113,7 @@ export default function MineSweeperPage() {
           } 
         }
 
-        gameMode();
+        debugMode();
       }
     }
 
@@ -127,6 +125,8 @@ export default function MineSweeperPage() {
   const [firstMoveMade, setFirstMoveMade] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
+  const [numFlags, setNumFlags] = useState(NUM_MINES);
+
 
   function clickTile(row, col) {
     if (!gameRunning) return;
@@ -308,7 +308,16 @@ export default function MineSweeperPage() {
     event.preventDefault();
     if (!firstMoveMade) return;
 
+
     const newBoard = JSON.parse(JSON.stringify(board));
+    // if its flagged when u get a flag back
+    if (newBoard[row][col].flagged && numFlags > 0) {
+      setNumFlags(prev => prev + 1);
+    }
+    else {
+      setNumFlags(prev => prev - 1);
+    }
+
 
     newBoard[row][col].flagged = !newBoard[row][col].flagged;
 
@@ -343,6 +352,16 @@ export default function MineSweeperPage() {
     }
   }, [board]);
 
+  function playAgain() {
+
+    setGameRunning(true);
+    setFirstMoveMade(false);
+    setGameOver(false);
+    setGameWin(false);
+
+    setBoard(createBoard());
+  }
+
 
   return (
     <>
@@ -355,6 +374,7 @@ export default function MineSweeperPage() {
 
       {!gameRunning && gameOver && <h1>Game over!</h1>}
       {!gameRunning && gameWin && <h1>GG!</h1>}
+      {!gameRunning && (gameOver || gameWin) && <button onClick={playAgain}>Play Again</button>}
     </>
   );
 }
