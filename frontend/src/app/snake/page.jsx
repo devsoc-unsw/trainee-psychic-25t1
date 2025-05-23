@@ -1,12 +1,12 @@
 'use client';
 
-import { useContext } from 'react';
+/* import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
 import Navbar from '../Navbar';
 import LeaderboardModal from '../Leaderboard';
 import SnakeGame from './snakeGame';
 
-export default function Wordle() {
+export default function Snake() {
   const { auth } = useContext(AuthContext);
 
   // Check logged in
@@ -32,6 +32,17 @@ export default function Wordle() {
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
         </div>
       )}
+    </div>
+  );
+} */
+
+import headImg from "@/app/snake/assets/snake-head.png";
+
+export default function TestImage() {
+  return (
+    <div>
+      <h1>Test Snake Head</h1>
+      <img src={headImg} alt="Snake Head" />
     </div>
   );
 }
