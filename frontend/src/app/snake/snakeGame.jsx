@@ -252,7 +252,7 @@ export default function SnakeGame() {
     const radius = UNITSIZE / 2;
     ctx.beginPath();
     ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.fillStyle = FOODCOLOR;
+    ctx.fillStyle = '#e8481d';
     ctx.fill();
     ctx.closePath();
 
@@ -291,10 +291,10 @@ export default function SnakeGame() {
         const t1 = (y / UNITSIZE) % 2;
         const t2 = (x / UNITSIZE) % 2;
         if (t1 === t2) {
-          ctx.fillStyle = '#ccc';
+          ctx.fillStyle = '#d1e5e7';
           ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
         } else {
-          ctx.fillStyle = '#b1b1b1';
+          ctx.fillStyle = '#deeded';
           ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
         }
       }
