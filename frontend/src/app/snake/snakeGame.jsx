@@ -3,6 +3,11 @@
 import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 
+import headImg from "../../../public/images/snake/snake-head.png";
+import bodyImg from "../../../public/images/snake/snake-body.png";
+import tailImg from "../../../public/images/snake/snake-tail.png";
+import turnImg from "../../../public/images/snake/snake-turn.png";
+
 // Constants
 const BOARDBACKGROUND = 'white';
 const SNAKECOLOR = 'lightgreen';
@@ -29,6 +34,20 @@ export default function SnakeGame() {
   const runningRef = useRef(running);
   const velocityRef = useRef(velocity);
   const foodRef = useRef(food);
+
+  const imageRefs = useRef({
+    head: new Image(),
+    tail: new Image(),
+    body: new Image(),
+    turn: new Image()
+  });
+
+  useEffect(() => {
+    imageRefs.current.head.src = headImg.src;
+    imageRefs.current.tail.src = tailImg.src;
+    imageRefs.current.body.src = bodyImg.src;
+    imageRefs.current.turn.src = turnImg.src;
+  }, []);
 
   useEffect(() => {
     foodRef.current = food;
@@ -276,12 +295,80 @@ export default function SnakeGame() {
   function drawSnake() {
     const ctx = ctxRef.current;
     if (!ctx) return;
-    ctx.fillStyle = SNAKECOLOR;
-    ctx.strokeStyle = SNAKEBORDER;
-    snake.forEach(snakePart => {
-      ctx.fillRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
-      ctx.strokeRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
+
+    snake.forEach((part, index) => {
+      const isHead = index === 0;
+      const isTail = index === snake.length - 1;
+      const x = part.x;
+      const y = part.y;
+
+      let img;
+      let angle = 0;
+
+      if (isHead) {
+        img = imageRefs.current.head;
+        if (snake.length > 1) {
+          angle = getRotationAngle(part, snake[1]);
+        }
+      } else if (isTail) {
+        img = img = imageRefs.current.tail;
+        if (snake.length > 1) {
+          angle = getRotationAngle(snake[snake.length - 2], part);
+        }
+      } else {
+        const prev = snake[index - 1];
+        const next = snake[index + 1];
+        const isTurn = (prev.x !== next.x) && (prev.y !== next.y);
+
+        if (isTurn) {
+          img = imageRefs.current.turn;
+          angle = getTurnAngle(prev, part, next);
+        } else {
+          img = imageRefs.current.body;
+          angle = getRotationAngle(prev, part);
+        }
+      }
+
+      const hasImage = img.complete && img.naturalWidth > 0;
+
+      if (hasImage) {
+        ctx.save();
+        ctx.translate(x + UNITSIZE / 2, y + UNITSIZE / 2);
+        ctx.rotate(angle);
+        ctx.drawImage(img, -UNITSIZE / 2, -UNITSIZE / 2, UNITSIZE, UNITSIZE);
+        ctx.restore();
+      } else {
+        ctx.fillStyle = isHead ? 'darkgreen' : SNAKECOLOR;
+        ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
+        ctx.strokeStyle = SNAKEBORDER;
+        ctx.strokeRect(x, y, UNITSIZE, UNITSIZE);
+      }
     });
+  }
+
+  function getTurnAngle(prev, current, next) {
+    const fromPrev = { x: current.x - prev.x, y: current.y - prev.y };
+    const toNext = { x: next.x - current.x, y: next.y - current.y };
+    if (fromPrev.x === 1 && toNext.y === 1) return 0;
+    if (fromPrev.y === 1 && toNext.x === -1) return Math.PI / 2; 
+    if (fromPrev.x === -1 && toNext.y === -1) return Math.PI; 
+    if (fromPrev.y === -1 && toNext.x === 1) return 3 * Math.PI / 2; 
+
+    if (toNext.x === 1 && fromPrev.y === 1) return 0;
+    if (toNext.y === 1 && fromPrev.x === -1) return Math.PI / 2;
+    if (toNext.x === -1 && fromPrev.y === -1) return Math.PI;
+    if (toNext.y === -1 && fromPrev.x === 1) return 3 * Math.PI / 2;
+    return 0;
+  }
+
+  function getRotationAngle(from, to) {
+    const dx = to.x - from.x;
+    const dy = to.y - from.y;
+    if (dx === UNITSIZE) return 0;
+    if (dy === UNITSIZE) return Math.PI / 2;
+    if (dx === -UNITSIZE) return Math.PI;
+    if (dy === -UNITSIZE) return -Math.PI / 2;
+    return 0;
   }
 
   function drawGridBackground() {

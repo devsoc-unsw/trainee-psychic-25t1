@@ -1,7 +1,6 @@
 'use client';
-import Image from 'next/image'
 
-/* import { useContext } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
 import Navbar from '../Navbar';
 import LeaderboardModal from '../Leaderboard';
@@ -33,18 +32,6 @@ export default function Snake() {
           <h1 className="text-2xl font-semibold">Please log in to continue.</h1>
         </div>
       )}
-    </div>
-  );
-} */
-
-// import headImg from "@/app/snake/assets/snake-head.png";
-import headImg from "../../../public/images/snake/snake-head.png";
-
-export default function TestImage() {
-  return (
-    <div>
-      <h1>Test Snake Head</h1>
-      <Image src={headImg} alt="Snake Head" />
     </div>
   );
 }
