@@ -113,7 +113,7 @@ export default function MineSweeperPage() {
           } 
         }
 
-        gameMode();
+        debugMode();
       }
     }
 
@@ -125,6 +125,8 @@ export default function MineSweeperPage() {
   const [firstMoveMade, setFirstMoveMade] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
+  const [numFlags, setNumFlags] = useState(NUM_MINES);
+
 
   function clickTile(row, col) {
     if (!gameRunning) return;
@@ -306,7 +308,16 @@ export default function MineSweeperPage() {
     event.preventDefault();
     if (!firstMoveMade) return;
 
+
     const newBoard = JSON.parse(JSON.stringify(board));
+    // if its flagged when u get a flag back
+    if (newBoard[row][col].flagged && numFlags > 0) {
+      setNumFlags(prev => prev + 1);
+    }
+    else {
+      setNumFlags(prev => prev - 1);
+    }
+
 
     newBoard[row][col].flagged = !newBoard[row][col].flagged;
 
