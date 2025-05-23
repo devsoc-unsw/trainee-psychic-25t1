@@ -13,7 +13,7 @@ export default function MineSweeperPage() {
   const [gameRunning, setGameRunning] = useState(true);
   
   function createBoard() {
-    if (!gameRunning) return;
+    // if (!gameRunning) return;
 
     const myArray = [];
 
@@ -55,8 +55,6 @@ export default function MineSweeperPage() {
   }
 
   function displayBoard(board, clickTile , flagMine) {
-
-
     const theBoard = [];
   
     for (let i = 0; i < NUM_ROWS; i++) {
@@ -343,6 +341,16 @@ export default function MineSweeperPage() {
     }
   }, [board]);
 
+  function playAgain() {
+
+    setGameRunning(true);
+    setFirstMoveMade(false);
+    setGameOver(false);
+    setGameWin(false);
+
+    setBoard(createBoard());
+  }
+
 
   return (
     <>
@@ -355,6 +363,7 @@ export default function MineSweeperPage() {
 
       {!gameRunning && gameOver && <h1>Game over!</h1>}
       {!gameRunning && gameWin && <h1>GG!</h1>}
+      {!gameRunning && (gameOver || gameWin) && <button onClick={playAgain}>Play Again</button>}
     </>
   );
 }

@@ -154,7 +154,8 @@ export default function SnakeGame() {
       const ateFood = (newHead.x === currentActualFood[0] && newHead.y === currentActualFood[1]);
 
       if (ateFood) {
-        setScore(s => s + 1);
+        // this is kinda sketchy but oh well
+        setScore(s => s + 1/2);
         createFood();
       } else {
         newSnakeArray = newSnakeArray.slice(0, -1);
