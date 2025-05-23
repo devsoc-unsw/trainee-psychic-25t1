@@ -311,10 +311,11 @@ export default function MineSweeperPage() {
 
     const newBoard = JSON.parse(JSON.stringify(board));
     // if its flagged when u get a flag back
-    if (newBoard[row][col].flagged && numFlags > 0) {
+    if (newBoard[row][col].flagged) {
       setNumFlags(prev => prev + 1);
     }
     else {
+      if (numFlags === 0) return;
       setNumFlags(prev => prev - 1);
     }
 
