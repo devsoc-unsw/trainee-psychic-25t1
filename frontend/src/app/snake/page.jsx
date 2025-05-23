@@ -1,4 +1,5 @@
 'use client';
+import Image from 'next/image'
 
 /* import { useContext } from 'react';
 import { AuthContext } from '@/components/AuthContext';
@@ -36,13 +37,14 @@ export default function Snake() {
   );
 } */
 
-import headImg from "@/app/snake/assets/snake-head.png";
+// import headImg from "@/app/snake/assets/snake-head.png";
+import headImg from "../../../public/images/snake/snake-head.png";
 
 export default function TestImage() {
   return (
     <div>
       <h1>Test Snake Head</h1>
-      <img src={headImg} alt="Snake Head" />
+      <Image src={headImg} alt="Snake Head" />
     </div>
   );
 }
