@@ -115,14 +115,6 @@ export default function SnakeGame() {
     setFood([foodX, foodY]);
   }
 
-  function drawFood() {
-    const ctx = ctxRef.current;
-    if (!ctx || !food) return;
-    const [foodX, foodY] = food;
-    ctx.fillStyle = FOODCOLOR;
-    ctx.fillRect(foodX, foodY, UNITSIZE, UNITSIZE);
-  }
-
   function moveSnake() {
     if (!runningRef.current) return; 
 
@@ -167,17 +159,6 @@ export default function SnakeGame() {
         newSnakeArray = newSnakeArray.slice(0, -1);
       }
       return newSnakeArray;
-    });
-  }
-
-  function drawSnake() {
-    const ctx = ctxRef.current;
-    if (!ctx) return;
-    ctx.fillStyle = SNAKECOLOR;
-    ctx.strokeStyle = SNAKEBORDER;
-    snake.forEach(snakePart => {
-      ctx.fillRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
-      ctx.strokeRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
     });
   }
 
@@ -255,4 +236,50 @@ export default function SnakeGame() {
       </button>
     </div>
   );
+
+  ////////////////////////////////
+  /// Drawing Functions
+  ////////////////////////////////
+
+  function drawFood() {
+    const ctx = ctxRef.current;
+    if (!ctx || !food) return;
+    const [foodX, foodY] = food;
+
+    const centerX = foodX + (UNITSIZE / 2);
+    const centerY = foodY + (UNITSIZE / 2);
+    const radius = UNITSIZE / 2;
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
+    ctx.fillStyle = FOODCOLOR;
+    ctx.fill();
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.arc(centerX - 4, centerY - 4, radius / 3, 0, Math.PI * 2);
+    ctx.fillStyle = 'white';
+    ctx.globalAlpha = 0.3;
+    ctx.fill();
+    ctx.globalAlpha = 1.0;
+    ctx.closePath();
+
+    ctx.beginPath();
+    ctx.moveTo(centerX, centerY - radius);
+    ctx.lineTo(centerX, centerY - radius - 5);
+    ctx.strokeStyle = 'brown';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.closePath();
+  }
+
+  function drawSnake() {
+    const ctx = ctxRef.current;
+    if (!ctx) return;
+    ctx.fillStyle = SNAKECOLOR;
+    ctx.strokeStyle = SNAKEBORDER;
+    snake.forEach(snakePart => {
+      ctx.fillRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
+      ctx.strokeRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
+    });
+  }
 }
