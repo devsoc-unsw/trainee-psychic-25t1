@@ -65,6 +65,7 @@ export default function SnakeGame() {
     const ctx = ctxRef.current;
     if (!ctx) return;
     clearBoard();
+    drawGridBackground();
     drawFood();
     drawSnake();
     if (!runningRef.current && (score > 0 || snake.length > 0 )) {
@@ -281,5 +282,22 @@ export default function SnakeGame() {
       ctx.fillRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
       ctx.strokeRect(snakePart.x, snakePart.y, UNITSIZE, UNITSIZE);
     });
+  }
+
+  function drawGridBackground() {
+    const ctx = ctxRef.current;
+    for (let x = 0; x < gameWidth; x += UNITSIZE) {
+      for (let y = 0; y < gameHeight; y += UNITSIZE) {
+        const t1 = (y / UNITSIZE) % 2;
+        const t2 = (x / UNITSIZE) % 2;
+        if (t1 === t2) {
+          ctx.fillStyle = '#ccc';
+          ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
+        } else {
+          ctx.fillStyle = '#b1b1b1';
+          ctx.fillRect(x, y, UNITSIZE, UNITSIZE);
+        }
+      }
+    }
   }
 }
