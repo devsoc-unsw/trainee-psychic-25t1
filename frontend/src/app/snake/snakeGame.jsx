@@ -347,17 +347,25 @@ export default function SnakeGame() {
   }
 
   function getTurnAngle(prev, current, next) {
-    const fromPrev = { x: current.x - prev.x, y: current.y - prev.y };
-    const toNext = { x: next.x - current.x, y: next.y - current.y };
-    if (fromPrev.x === 1 && toNext.y === 1) return 0;
-    if (fromPrev.y === 1 && toNext.x === -1) return Math.PI / 2; 
-    if (fromPrev.x === -1 && toNext.y === -1) return Math.PI; 
-    if (fromPrev.y === -1 && toNext.x === 1) return 3 * Math.PI / 2; 
+    const dx1 = current.x - prev.x;
+    const dy1 = current.y - prev.y;
+    const dx2 = next.x - current.x;
+    const dy2 = next.y - current.y;
 
-    if (toNext.x === 1 && fromPrev.y === 1) return 0;
-    if (toNext.y === 1 && fromPrev.x === -1) return Math.PI / 2;
-    if (toNext.x === -1 && fromPrev.y === -1) return Math.PI;
-    if (toNext.y === -1 && fromPrev.x === 1) return 3 * Math.PI / 2;
+    const from = { x: Math.sign(dx1), y: Math.sign(dy1) };
+    const to = { x: Math.sign(dx2), y: Math.sign(dy2) };
+
+    if (from.x === 1 && to.y === 1) return Math.PI;
+    if (from.y === 1 && to.x === -1) return 3 * Math.PI / 2; 
+    if (from.x === -1 && to.y === -1) return 0;
+    if (from.y === -1 && to.x === 1) return Math.PI / 2; 
+
+    if (from.y === 1 && to.x === 1) return 0;
+    if (from.x === -1 && to.y === 1) return Math.PI / 2; 
+    if (from.y === -1 && to.x === -1) return Math.PI; 
+    if (from.x === 1 && to.y === -1) return 3 * Math.PI / 2; 
+
+    console.warn("UNHANDLED TURN", { from, to });
     return 0;
   }
 
