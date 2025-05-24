@@ -1,19 +1,28 @@
 'use client';
 
-import { useEffect } from 'react'; // useState is removed
+import { useEffect, useState } from 'react'; 
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 
-// These are for the DEFAULT Leaflet icon
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import iconUrlfromLeaflet from 'leaflet/dist/images/marker-icon.png'; // Renamed to avoid conflict
-import shadowUrlfromLeaflet from 'leaflet/dist/images/marker-shadow.png'; // Renamed
+import iconUrlfromLeaflet from 'leaflet/dist/images/marker-icon.png'; 
+import shadowUrlfromLeaflet from 'leaflet/dist/images/marker-shadow.png';
 
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'; // Removed unused imports
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'; 
 
 export default function Quiz({ locations }) {
   const unswCoordinates = [-33.9173, 151.2313];
-  // const [icon, setIcon] = useState(null); // REMOVE THIS
+ 
+  const [selectedPos, setSelectedPos] = useState(null);
+  
+  function MapEvents() {
+    useMapEvents({
+      click(e) {
+        setSelectedPos(e.latlng);
+      },
+    });
+    return null;
+  }
 
   useEffect(() => {
     // THIS SETS UP THE DEFAULT LEAFLET ICON GLOBALLY
@@ -26,12 +35,6 @@ export default function Quiz({ locations }) {
       shadowUrl: shadowUrlfromLeaflet.src,   // Use the imported one
     });
   }, []);
-
-  // REMOVE THIS useEffect for custom icon if using the default
-  // useEffect(() => {
-  //   // const L = require('leaflet'); // Already imported
-  //   setIcon(L.icon({ iconUrl: "/images/marker-icon.png" }));
-  // }, []);
 
   if (!Array.isArray(locations)) {
     console.warn("Quiz component: 'locations' prop is not an array or is undefined.");
@@ -49,18 +52,17 @@ export default function Quiz({ locations }) {
         <Marker
           key={location.name}
           position={location.coords}
-          // icon={icon} // REMOVE THIS if using default
         >
-          {/* Remove explicit position from Popup if it's a child of Marker */}
           <Popup>
             <div>
               <h2>{"Name: " + location.name}</h2>
-              {/* For debugging: */}
               <p>Coords: {location.coords[0]}, {location.coords[1]}</p>
             </div>
           </Popup>
         </Marker>
       ))}
+      {selectedPos && <Marker position={selectedPos} />}
+      <MapEvents/>
     </MapContainer>
   );
 }
