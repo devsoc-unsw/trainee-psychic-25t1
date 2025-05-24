@@ -2,27 +2,27 @@
     {
         "name:": "Ainsworth Building",
         "img": "/images/unsw_locations/ainsworth.jpg",
-        "coords": [-33.91849971384866, 151.23126906832755]
+        "coords": [-33.91865774430692, 151.23127778564168]
     },
     {
         "name": "Business Building",
         "img":  "/images/unsw_locations/business_school.jpg",
-        "coords": [-33.916613696863, 151.2296970278508]
+        "coords": [-33.91681012635278, 151.229609185642]
     },
     {
         "name": "Clancy Auditorium",
         "img" : "/images/unsw_locations/clancy_auditorium.jpg",
-        "coords": [-33.91663882008857,  151.23521364081077]
+        "coords": [-33.916771256978826, 151.23460075619752]
     },
     {
         "name": "Goldstein Hall",
         "img" : "/images/unsw_locations/goldstein_hall.jpg",
-        "coords": [-33.91641959972622, 151.23176407943595]
+        "coords": [-33.91660658997158, 151.23132218762368]
     },
     {
         "name": "Law Library",
         "img" : "/images/unsw_locations/law_library.jpg",
-        "coords": [-33.916730607037564, 151.22816173155348]
+        "coords": [-33.91688881745493, 151.22794024777986]
     },
     {
         "name": "Library",
@@ -32,21 +32,21 @@
     {
         "name": "OMB",
         "img" : "/images/unsw_locations/old-main-buliding.jpeg",
-        "coords": [-33.9181565783026,  151.23070647198477]
+        "coords": [-33.91828617005071, 151.23078339729855]
     },
     {
         "name": "Quad",
         "img" : "/images/unsw_locations/quadrangle_building.jpg",
-        "coords": [-33.91816152578741, 151.23162024636525]
+        "coords": [-33.91719073148011, 151.23164464009764]
     },
     {
         "name": "Hilmer",
         "img" : "/images/unsw_locations/sci_eng_building.jpg",
-        "coords": [-33.91653461326932, 151.22922072546723]
+        "coords": [-33.91668541343043, 151.22865142674797]
     },
     {
         "name": "Tyree",
         "img" : "/images/unsw_locations/tyree_building.jpg",
-        "coords": [-33.91758511845691, 151.22671756832744]
+        "coords": [-33.91772815156285, 151.2267262881689]
     }
 ]
