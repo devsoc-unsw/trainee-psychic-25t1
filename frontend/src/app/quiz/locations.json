@@ -2,61 +2,51 @@
     {
         "name:": "Ainsworth Building",
         "img": "/images/unsw_locations/ainsworth.jpg",
-        "x": -33.91850380118686, 
-        "y": 151.23127442997642
+        "coords": [-33.91865774430692, 151.23127778564168]
     },
     {
         "name": "Business Building",
         "img":  "/images/unsw_locations/business_school.jpg",
-        "x": -33.91664747779035, 
-        "y": 151.22959058738263
+        "coords": [-33.91681012635278, 151.229609185642]
     },
     {
         "name": "Clancy Auditorium",
         "img" : "/images/unsw_locations/clancy_auditorium.jpg",
-        "x": -33.916852254058405, 
-        "y": 151.2345080512632
+        "coords": [-33.916771256978826, 151.23460075619752]
     },
     {
         "name": "Goldstein Hall",
         "img" : "/images/unsw_locations/goldstein_hall.jpg",
-        "x": -33.916442701030185, 
-        "y": 151.23128554610815
+        "coords": [-33.91660658997158, 151.23132218762368]
     },
     {
         "name": "Law Library",
         "img" : "/images/unsw_locations/law_library.jpg",
-        "x": -33.91687896397012, 
-        "y": 151.22772969478788
+        "coords": [-33.91688881745493, 151.22794024777986]
     },
     {
         "name": "Library",
         "img" : "/images/unsw_locations/main_library.jpeg",
-        "x": -33.91736419257553, 
-        "y": 151.23337121172858
+        "coords": [-33.91734631803288,  151.233794319913]
     },
     {
         "name": "OMB",
         "img" : "/images/unsw_locations/old-main-buliding.jpeg",
-        "x": -33.9181565783026,  
-        "y": 151.23070647198477
+        "coords": [-33.91828617005071, 151.23078339729855]
     },
     {
         "name": "Quad",
         "img" : "/images/unsw_locations/quadrangle_building.jpg",
-        "x": -33.916936835416806, 
-        "y": 151.23049682769792
+        "coords": [-33.91719073148011, 151.23164464009764]
     },
     {
         "name": "Hilmer",
         "img" : "/images/unsw_locations/sci_eng_building.jpg",
-        "x": -33.91632695742632, 
-        "y": 151.22769757344963
+        "coords": [-33.91668541343043, 151.22865142674797]
     },
     {
         "name": "Tyree",
         "img" : "/images/unsw_locations/tyree_building.jpg",
-        "x": -33.91751554772195, 
-        "y": 151.22675383620611
+        "coords": [-33.91772815156285, 151.2267262881689]
     }
 ]
