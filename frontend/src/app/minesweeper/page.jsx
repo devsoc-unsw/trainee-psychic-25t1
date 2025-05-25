@@ -8,7 +8,6 @@ const NUM_COLS = 8;
 const NUM_MINES = 10;
 
 
-
 export default function MineSweeperPage() {
   const [gameRunning, setGameRunning] = useState(true);
   
@@ -112,8 +111,6 @@ export default function MineSweeperPage() {
             }
           } 
         }
-
-        debugMode();
       }
     }
 

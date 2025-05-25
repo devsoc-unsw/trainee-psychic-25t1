@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 export default function Clicker() {
   const [clicks, setClicks] = useState(0);
@@ -8,7 +8,7 @@ export default function Clicker() {
   const [cps, setCps] = useState(0);
   const [upgrades, setUpgrades] = useState([]);
   const [unlockedUpgrades, setUnlockedUpgrades] = useState([]);
-  const [clickStrength, setClickStrength] = useState(1);
+  const clickStrength = useRef(1);
   const [clickUpgradeLevel, setClickUpgradeLevel] = useState(1);
   const [clickUpgradeCost, setClickUpgradeCost] = useState(20);
   const [showPokemon, setShowPokemon] = useState(false);
@@ -53,17 +53,10 @@ export default function Clicker() {
     console.log(`clicks: ${clicks}`);
     console.log(cost);
   
-    setClicks(prev => {
-      if (prev >= cost) {
-        setClickStrength(prev => prev + 1);
-        setClickUpgradeLevel(prev => prev + 1);
-        setClickUpgradeCost(Math.ceil(cost * 1.5));
-        setUpgrades(prev => prev.filter(u => u.label !== 'upgrade click'));
-        
-        return prev - cost;
-      }
-      return prev;
-    });
+    if (clicks >= cost) {
+      clickStrength.current += 1;
+      setClicks(prev => prev - cost);
+    }
   };
   
 
@@ -117,7 +110,7 @@ export default function Clicker() {
   }, [clicks, clickUpgradeCost]);
   
   const handleClick = () => {
-    setClicks(prev => prev + clickStrength);
+    setClicks(prev => prev + clickStrength.current);
     setClickTimestamps(prev => [...prev, Date.now()])
   }
   
