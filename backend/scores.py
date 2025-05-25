@@ -147,40 +147,56 @@ def get_scores_by_user():
 def get_most_played_game_by_user():
     current_user_id = get_jwt_identity()
 
+    conn = None
+    cursor = None
     try:
-        conn = get_db_connection()
+        conn = get_db_connection() 
         cursor = conn.cursor()
 
-        # query looks cursed but oh well
-        query = """select game_id from (
-            select game_id, count(*) from scores where user_id = %s
-            group by game_id
-        ) where count = (
-            select max(count) from (
-                select game_id, count(*) from scores where user_id = %s
+        query = """
+        select game_id, G.name
+        from Scores AS s
+        join Games AS G ON s.game_id = G.id
+        where s.user_id = %s
+        group by game_id, G.name
+        having count(*) = (
+            select max(sub_count)
+            from (
+                select count(*) AS sub_count
+                from Scores
+                where user_id = %s
                 group by game_id
-            )
-        )"""
+            ) AS user_game_counts
+        )
+        order by count(*) desc
+        limit 1
+        """
 
         cursor.execute(query, (current_user_id, current_user_id))
-        most_played_game = cursor.fetchone()
-        conn.commit()
-        return jsonify({most_played_game})
+        most_played_game = cursor.fetchone() 
+
+
+        if most_played_game:
+            response_data = {"game_id": most_played_game[0], "game_name": most_played_game[1]}
+            return jsonify(response_data)
+        else:
+            return jsonify({"msg": "No most played game found for this user."}), 404
+
     except Exception as e:
-        print(f"Error {e}")
-        return jsonify({"msg": "Error"}), 500
+        print(f"Error: {e}")
+        # Log the full traceback in a real application for debugging
+        return jsonify({"msg": "Internal server error"}), 500
     finally:
-        cursor.close()
-        conn.close()
+        if cursor:
+            cursor.close()
+        if conn:
+            conn.close()
 
 
 @score_bp.route('/scores/get', methods=['GET'])
 @jwt_required()
 def get_scores():
     current_user_id = get_jwt_identity()
-    # data = request.get_json()
-
-    print("hi")
 
     try:
         conn = get_db_connection()
@@ -195,11 +211,6 @@ def get_scores():
 
         res = cur.fetchall()
         conn.commit()
-        print("hey")
-        print(res)
-
-        for item in res:
-            print(item)
 
         scores_list = [{"username": row[1], "score": row[2]} for row in res]
         return jsonify({"scores": scores_list})

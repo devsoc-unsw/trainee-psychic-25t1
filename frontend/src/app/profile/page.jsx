@@ -1,30 +1,65 @@
 "use client";
-import React from 'react'; 
+import axios from "axios";
+import React from "react";
+import { useState } from "react";
 
 import games from "../game/games_info.json";
 
 export default function ProfilePage() {
+  const [userDetails, setUserDetails] = useState([null, null, null]);
+  const [gameDetails, setGameDetails] = useState([null, null]);
+
   function toggleModal() {
-    const dialogElement = document.getElementById('my_modal_3');
+    const dialogElement = document.getElementById("my_modal_3");
     if (dialogElement) {
       if (dialogElement.open) {
-        dialogElement.close(); 
+        dialogElement.close();
       } else {
         dialogElement.showModal();
       }
     }
   }
 
+  async function getUserDetails() {
+    try {
+      const response = await axios.get("http://localhost:8000/auth/status", {
+        withCredentials: true,
+      });
+      const { age, email, id, name } = response.data.user;
+      setUserDetails([email, name]);
+    } catch (error) {
+      console.error("Failed to get status: ", error);
+    }
+  }
+  async function frequentlyPLayed() {
+    try {
+      const response = await axios.get(
+        "http://localhost:8000/scores/user/most_played",
+        {
+          withCredentials: true,
+        }
+      );
+      setGameDetails([response.data.game_id, response.data.game_name]);
+    } catch (error) {
+      console.error("Failed to get status: ", error);
+    }
+  }
+
   function GameInfoModal(props) {
-    const {game} = props;
+    const { game } = props;
+
+    getUserDetails();
+    frequentlyPLayed();
     return (
       <>
         <dialog id="my_modal_3" className="modal">
           <div className="modal-box">
             <form method="dialog">
-              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+              <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+                ✕
+              </button>
             </form>
-            <h3 className="font-bold text-lg">{game.name}</h3>
+            <h3 className="font-bold text-lg">{gameDetails[1]}</h3>
             <p className="py-4">{game.description}</p>
             <button className="btn btn-primary">Play</button>
           </div>
@@ -34,8 +69,7 @@ export default function ProfilePage() {
   }
 
   function UserInfo(props) {
-
-    const {game} = props;
+    const { game } = props;
     console.log(games);
 
     return (
@@ -50,10 +84,10 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="leading-7 mb-2 [&:not(:first-child)]:mt-6">
-                Username
+                  {userDetails[1]}
                 </p>
                 <p className="text-sm text-zinc-700 leading-none">
-                email@email.com
+                  {userDetails[0]}
                 </p>
               </div>
             </div>
@@ -67,7 +101,10 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex flex-col flex-[1.5] pl-2">
                   <div>
-                    <a onClick={toggleModal} className="cursor-pointer hover:underline">
+                    <a
+                      onClick={toggleModal}
+                      className="cursor-pointer hover:underline"
+                    >
                       {game.name}
                     </a>
                   </div>
@@ -86,9 +123,6 @@ export default function ProfilePage() {
   // make a call to the backend to get the player's most played game.
   const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
 
-  console.log("hi");
-  console.log(mostPlayedGame);
-
   return (
     <div
       className="hero min-h-screen"
@@ -96,8 +130,8 @@ export default function ProfilePage() {
         backgroundImage: "url(/images/arcade.jpg)",
       }}
     >
-      <UserInfo game = {mostPlayedGame}/>
-      <GameInfoModal game = {mostPlayedGame}/>
+      <UserInfo game={mostPlayedGame} />
+      <GameInfoModal game={mostPlayedGame} />
     </div>
   );
 }
