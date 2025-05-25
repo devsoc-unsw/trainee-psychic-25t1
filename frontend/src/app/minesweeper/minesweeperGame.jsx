@@ -62,26 +62,82 @@ export default function MineSweeperPage() {
       
         const cur = board[i][j];
 
+        //////////////////////////////
+        /// Styling
+        //////////////////////////////
+
+        const flagged = (
+          <div
+            key={uniqueKey}
+            id={cellId}
+            onContextMenu={(event) => flagMine(i, j, event)}
+            className="w-10 h-10 flex items-center justify-center text-white bg-red-500 border border-red-700 rounded-md select-none cursor-pointer"
+          >
+          </div>
+        );
+
+        const explodedMine = (
+          <div
+            key={uniqueKey}
+            id={cellId}
+            className="w-10 h-10 flex items-center justify-center text-white bg-black border border-red-700 rounded-md select-none"
+          >
+          </div>
+        );
+
+        const noMines = (
+          <div
+            key={uniqueKey}
+            id={cellId}
+            onContextMenu={(event) => flagMine(i, j, event)}
+            onClick={() => clickTile(i, j)}
+            className="w-10 h-10 flex items-center justify-center bg-green-200 text-green-800 border border-green-300 rounded-md select-none cursor-pointer"
+          />
+        );
+
+        const nearbyMines = (
+          <div
+            key={uniqueKey}
+            id={cellId}
+            onContextMenu={(event) => flagMine(i, j, event)}
+            onClick={() => clickTile(i, j)}
+            className="w-10 h-10 flex items-center justify-center text-yellow-800 bg-yellow-200 border border-yellow-400 rounded-md font-bold select-none cursor-pointer"
+          >
+            {board[i][j].numMines}
+          </div>
+        );
+
+        const defaultTile = (
+          <div
+            key={uniqueKey}
+            id={cellId}
+            onContextMenu={(event) => flagMine(i, j, event)}
+            onClick={() => clickTile(i, j)}
+            className="w-10 h-10 flex items-center justify-center bg-blue-300 hover:bg-blue-400 border border-blue-500 rounded-md select-none cursor-pointer"
+          />
+        );
+
+        //////////////////////////////
+
         // this is what the player will see
         function gameMode() {
           if (cur.flagged) {
-            theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
+            theBoard.push(flagged);
           } 
           else {
             if (cur.revealed) {
               if (cur.bomb) {
-                theBoard.push(<div key={uniqueKey} id={cellId} className="btn btn-error">MINE</div>);
+                theBoard.push(explodedMine); 
               }
               else {
                 if (cur.numMines === 0) {
-                  theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success"></div>);
+                  theBoard.push(noMines); 
                 } else {
-                  theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+                  theBoard.push(nearbyMines);
                 }
               }
-
             } else {
-              theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-info"></div>);
+              theBoard.push(defaultTile);
             }
           }
         }
@@ -364,13 +420,9 @@ export default function MineSweeperPage() {
 
   return (
     <>
-      <h1>Minesweeper</h1>
-      <div
-        className="grid grid-cols-8 w-1/2 h-1/2 mx-auto"
-      >
+      <div className="grid grid-cols-8 gap-1 w-fit mx-auto mt-10">
         {boardUI}
       </div>
-
       {!gameRunning && gameOver && <h1>Game over!</h1>}
       {!gameRunning && gameWin && <h1>GG!</h1>}
       {!gameRunning && (gameOver || gameWin) && <button onClick={playAgain}>Play Again</button>}
