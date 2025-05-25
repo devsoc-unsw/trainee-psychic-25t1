@@ -23,7 +23,11 @@ bcrypt = Bcrypt()
 def get_db_connection():
     return mysql.connector.connect(**CONFIG)
 
-"""
+
+@score_bp.route('/scores/upload', methods=['POST'])
+@jwt_required()
+def upload_score():
+    """
     Upload the game score
     ---
     Uploads the score for the given game_id, using the JWT
@@ -38,10 +42,7 @@ def get_db_connection():
     - 401 Unauthorized: Invalid credentials
     - 404 Not Found: No game_id found with the given game_id
     - 500 Internal Server Error: Database or server error
-"""
-@score_bp.route('/scores/upload', methods=['POST'])
-@jwt_required()
-def upload_score():
+    """
     current_user_id = get_jwt_identity()
     data = request.get_json()
 
@@ -166,4 +167,32 @@ def get_most_played_game_by_user():
         return jsonify({"msg": "Error"}), 500
     finally:
         cursor.close()
+        conn.close()
+
+
+@score_bp.route('/scores/get', methods=['GET'])
+@jwt_required()
+def get_scores():
+    current_user_id = get_jwt_identity()
+    # data = request.get_json()
+
+    print("hi")
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        query = """select user_id, sum(score) from scores"""
+
+        cur.execute(query)
+
+        res = cur.fetchall()
+        conn.commit()
+        print(res)
+        return jsonify({res})
+    except Exception as e:
+        print(f"Error {e}")
+        return jsonify({"msg": "Error"}), 500
+    finally:
+        cur.close()
         conn.close()
