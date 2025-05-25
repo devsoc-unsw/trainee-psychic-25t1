@@ -53,127 +53,136 @@ export default function MineSweeperPage() {
   }
 
   function displayBoard(board, clickTile , flagMine) {
-    const theBoard = [];
-  
-    for (let i = 0; i < NUM_ROWS; i++) {
-      for (let j = 0; j < NUM_ROWS; j++) {
-        const uniqueKey = `${i}-${j}`;
-        const cellId = `cell-${i}-${j}`;
-      
-        const cur = board[i][j];
+  const theBoard = [];
 
-        //////////////////////////////
-        /// Styling
-        //////////////////////////////
+  for (let i = 0; i < NUM_ROWS; i++) {
+    for (let j = 0; j < NUM_ROWS; j++) {
+      const uniqueKey = `${i}-${j}`;
+      const cellId = `cell-${i}-${j}`;
 
-        const flagged = (
-          <div
-            key={uniqueKey}
-            id={cellId}
-            onContextMenu={(event) => flagMine(i, j, event)}
-            className="w-10 h-10 flex items-center justify-center text-white bg-red-500 border border-red-700 rounded-md select-none cursor-pointer"
-          >
-          </div>
-        );
+      const cur = board[i][j];
 
-        const explodedMine = (
-          <div
-            key={uniqueKey}
-            id={cellId}
-            className="w-10 h-10 flex items-center justify-center text-white bg-black border border-red-700 rounded-md select-none"
-          >
-          </div>
-        );
+      //////////////////////////////
+      /// Styling with alternating colors
+      //////////////////////////////
 
-        const noMines = (
-          <div
-            key={uniqueKey}
-            id={cellId}
-            onContextMenu={(event) => flagMine(i, j, event)}
-            onClick={() => clickTile(i, j)}
-            className="w-10 h-10 flex items-center justify-center bg-green-200 text-green-800 border border-green-300 rounded-md select-none cursor-pointer"
-          />
-        );
+      const isLightTile = (i + j) % 2 === 0;
 
-        const nearbyMines = (
-          <div
-            key={uniqueKey}
-            id={cellId}
-            onContextMenu={(event) => flagMine(i, j, event)}
-            onClick={() => clickTile(i, j)}
-            className="w-10 h-10 flex items-center justify-center text-yellow-800 bg-yellow-200 border border-yellow-400 rounded-md font-bold select-none cursor-pointer"
-          >
-            {board[i][j].numMines}
-          </div>
-        );
+      const flagged = (
+        <div
+          key={uniqueKey}
+          id={cellId}
+          onContextMenu={(event) => flagMine(i, j, event)}
+          className="w-10 h-10 flex items-center justify-center text-white bg-red-600 border border-red-700 select-none cursor-pointer"
+        >
+        </div>
+      );
 
-        const defaultTile = (
-          <div
-            key={uniqueKey}
-            id={cellId}
-            onContextMenu={(event) => flagMine(i, j, event)}
-            onClick={() => clickTile(i, j)}
-            className="w-10 h-10 flex items-center justify-center bg-blue-300 hover:bg-blue-400 border border-blue-500 rounded-md select-none cursor-pointer"
-          />
-        );
+      const explodedMine = (
+        <div
+          key={uniqueKey}
+          id={cellId}
+          className="w-10 h-10 flex items-center justify-center text-white bg-black border border-red-700 select-none"
+        >
+        </div>
+      );
 
-        //////////////////////////////
+      const noMines = (
+        <div
+          key={uniqueKey}
+          id={cellId}
+          onContextMenu={(event) => flagMine(i, j, event)}
+          onClick={() => clickTile(i, j)}
+          className={`w-10 h-10 flex items-center justify-center border select-none cursor-pointer ${
+            isLightTile
+              ? "bg-[#fedfbf] border-[#967f69]"
+              : "bg-[#e8d0b8] border-[#967f69]"
+          }`}
+        />
+      );
 
-        // this is what the player will see
-        function gameMode() {
-          if (cur.flagged) {
-            theBoard.push(flagged);
-          } 
-          else {
-            if (cur.revealed) {
-              if (cur.bomb) {
-                theBoard.push(explodedMine); 
-              }
-              else {
-                if (cur.numMines === 0) {
-                  theBoard.push(noMines); 
-                } else {
-                  theBoard.push(nearbyMines);
-                }
-              }
+      const nearbyMines = (
+        <div
+          key={uniqueKey}
+          id={cellId}
+          onContextMenu={(event) => flagMine(i, j, event)}
+          onClick={() => clickTile(i, j)}
+          className={`w-10 h-10 flex items-center justify-center font-bold border select-none cursor-pointer ${
+            isLightTile
+              ? "bg-[#fedfbf] border-[#967f69]"
+              : "bg-[#e8d0b8] border-[#967f69]"
+          }`}
+        >
+          {cur.numMines}
+        </div>
+      );
+
+      const defaultTile = (
+        <div
+          key={uniqueKey}
+          id={cellId}
+          onContextMenu={(event) => flagMine(i, j, event)}
+          onClick={() => clickTile(i, j)}
+          className={`w-10 h-10 flex items-center justify-center border select-none cursor-pointer hover:brightness-110 ${
+            isLightTile
+              ? "bg-blue-300 border-blue-500"
+              : "bg-blue-400 border-blue-600"
+          }`}
+        />
+      );
+
+      //////////////////////////////
+
+      // this is what the player will see
+      function gameMode() {
+        if (cur.flagged) {
+          theBoard.push(flagged);
+        } else {
+          if (cur.revealed) {
+            if (cur.bomb) {
+              theBoard.push(explodedMine);
             } else {
-              theBoard.push(defaultTile);
+              if (cur.numMines === 0) {
+                theBoard.push(noMines);
+              } else {
+                theBoard.push(nearbyMines);
+              }
             }
+          } else {
+            theBoard.push(defaultTile);
           }
         }
+      }
+      gameMode();
 
-        // for debugging, liek when you want to see where the mines
-        // are placed on the map
-        function debugMode() {
-          // check if its flagged
-          if (cur.flagged) {
-            theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
-          } 
-          else {
-            if (cur.bomb) {
-              if (cur.revealed) {
-                theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-success">MINE</div>);
-              } else {                
-                theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-error">MINE</div>);
-              }
-            } else {
-              if (cur.revealed) {
-                theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
-              }
-              else {
-                theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success">{board[i][j].numMines}</div>);
-              }
+      // for debugging, liek when you want to see where the mines
+      // are placed on the map
+      function debugMode() {
+        // check if its flagged
+        if (cur.flagged) {
+          theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} className="btn btn-dash btn-error"></div>);
+        } 
+        else {
+          if (cur.bomb) {
+            if (cur.revealed) {
+              theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-success">MINE</div>);
+            } else {                
+              theBoard.push(<div key={uniqueKey} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} id={cellId} className="btn btn-error">MINE</div>);
             }
-          } 
-        }
-
-        gameMode();
+          } else {
+            if (cur.revealed) {
+              theBoard.push(<div key={uniqueKey} id={cellId} onClick={() => clickTile(i, j)} className="btn btn-warning">{board[i][j].numMines}</div>);
+            }
+            else {
+              theBoard.push(<div key={uniqueKey} id={cellId} onContextMenu={(event) => flagMine(i, j, event)} onClick={() => clickTile(i, j)} className="btn btn-soft btn-success">{board[i][j].numMines}</div>);
+            }
+          }
+        } 
       }
     }
-
-    return theBoard;
   }
-
+  return theBoard;
+}
 
   const [board, setBoard] = useState(createBoard());
   const [firstMoveMade, setFirstMoveMade] = useState(false);
@@ -420,9 +429,10 @@ export default function MineSweeperPage() {
 
   return (
     <>
-      <div className="grid grid-cols-8 gap-1 w-fit mx-auto mt-10">
+      <div className="grid grid-cols-8 w-fit mx-auto mt-10">
         {boardUI}
       </div>
+
       {!gameRunning && gameOver && <h1>Game over!</h1>}
       {!gameRunning && gameWin && <h1>GG!</h1>}
       {!gameRunning && (gameOver || gameWin) && <button onClick={playAgain}>Play Again</button>}
