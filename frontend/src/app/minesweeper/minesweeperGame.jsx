@@ -84,9 +84,9 @@ export default function MineSweeperPage() {
         <div
           key={uniqueKey}
           id={cellId}
-          className="w-10 h-10 flex items-center justify-center bg-[#f7eeee] border-[#000000] border select-none"
+          className="w-10 h-10 flex items-center justify-center bg-[#cc9494] border-[#000000] border select-none"
         >
-          Mine
+          <img src="/images/bomb.png" alt="Mine" className="w-6 h-6" />
         </div>
       );
 
