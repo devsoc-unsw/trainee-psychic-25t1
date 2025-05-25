@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Wordle",
     "description": "An awesome Wordle game",
-    "route": "TBA"
+    "route": "/wordle"
   },
   {
     "id": 2,
@@ -15,18 +15,18 @@
     "id": 3,
     "name": "UNSW Guessr",
     "description": "An awesome quiz game with UNSW locations",
-    "route": "TBA"
+    "route": "/quiz"
   },
   {
     "id": 4,
     "name": "Minesweeper",
     "description": "An awesome Minesweeper game",
-    "route": "TBA"
+    "route": "/minesweeper"
   },
   {
     "id": 5,
     "name": "Clicker Game",
     "description": "An awesome clicker game",
-    "route": "TBA"
+    "route": "/clicker"
   }
 ]
