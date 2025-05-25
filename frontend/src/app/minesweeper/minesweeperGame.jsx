@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from "react";
+import Popup from "./Popup";
 
 const NUM_ROWS = 8;
 const NUM_COLS = 8;
@@ -75,6 +76,7 @@ export default function MineSweeperPage() {
           onContextMenu={(event) => flagMine(i, j, event)}
           className="w-10 h-10 flex items-center justify-center text-white bg-red-600 border border-red-700 select-none cursor-pointer"
         >
+          x
         </div>
       );
 
@@ -82,9 +84,9 @@ export default function MineSweeperPage() {
         <div
           key={uniqueKey}
           id={cellId}
-          className="w-10 h-10 flex items-center justify-center text-white bg-[#fff8f8] border-[#000000] border select-none"
+          className="w-10 h-10 flex items-center justify-center bg-[#f7eeee] border-[#000000] border select-none"
         >
-          Bomb
+          Mine
         </div>
       );
 
@@ -190,6 +192,7 @@ export default function MineSweeperPage() {
   const [gameOver, setGameOver] = useState(false);
   const [gameWin, setGameWin] = useState(false);
   const [numFlags, setNumFlags] = useState(NUM_MINES);
+  const [popup, setPopup] = useState(false);
 
 
   function clickTile(row, col) {
@@ -269,6 +272,7 @@ export default function MineSweeperPage() {
         bombBoard = revealMines(board);
         setGameRunning(false);
         setGameOver(true);
+        setPopup(true);
       }
       setBoard(bombBoard);
       return;
@@ -414,6 +418,7 @@ export default function MineSweeperPage() {
       setBoard(revealMines(board));
       setGameRunning(false);
       setGameWin(true);
+      setPopup(true);
     }
   }, [board]);
 
@@ -423,20 +428,21 @@ export default function MineSweeperPage() {
     setFirstMoveMade(false);
     setGameOver(false);
     setGameWin(false);
+    setPopup(false);
 
     setBoard(createBoard());
   }
 
 
   return (
-    <>
+    <div className="flex flex-col items-center justify-between h-[55vh]">
       <div className="grid grid-cols-8 w-fit mx-auto mt-10">
         {boardUI}
       </div>
-
-      {!gameRunning && gameOver && <h1>Game over!</h1>}
-      {!gameRunning && gameWin && <h1>GG!</h1>}
-      {!gameRunning && (gameOver || gameWin) && <button onClick={playAgain}>Play Again</button>}
-    </>
+      {popup && !gameRunning && (gameOver || gameWin) && <Popup gameOver={gameOver} close={() => setPopup(false)}/>}
+      <button onClick={playAgain} className="px-4 py-2 rounded-md border border-neutral-300 bg-neutral-100 text-neutral-500 text-sm hover:-translate-y-1 transform transition duration-200 hover:shadow-md">
+        Restart
+      </button>
+    </div>
   );
 }
