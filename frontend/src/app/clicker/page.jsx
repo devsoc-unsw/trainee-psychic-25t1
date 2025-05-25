@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 export default function Clicker() {
   const [clicks, setClicks] = useState(0);
@@ -8,8 +8,8 @@ export default function Clicker() {
   const [cps, setCps] = useState(0);
   const [upgrades, setUpgrades] = useState([]);
   const [unlockedUpgrades, setUnlockedUpgrades] = useState([]);
-  const clickStrength = useRef(1);
-  const [clickUpgradeLevel, setClickUpgradeLevel] = useState(1);
+  const [clickStrength, setClickStrength] = useState(1);
+  const [clickUpgradeLevel, setClickUpgradeLevel] = useState(1); // Added this missing state
   const [clickUpgradeCost, setClickUpgradeCost] = useState(20);
   const [showPokemon, setShowPokemon] = useState(false);
   const [showFrog, setShowFrog] = useState(false);
@@ -43,30 +43,35 @@ export default function Clicker() {
         setClicks(prev => prev + 1);
       }, intervalMs);
 
+      return () => clearInterval(interval);
     }, [enabled, intervalMs])
   }
 
-  // ts is not working hell nah 
+  // Fixed purchaseClickUpgrade function
   const purchaseClickUpgrade = () => {
-    const cost = clickUpgradeCost; 
-  
-    console.log(`clicks: ${clicks}`);
-    console.log(cost);
-  
-    if (clicks >= cost) {
-      clickStrength.current += 1;
-      setClicks(prev => prev - cost);
-    }
+    setClicks(prev => {
+      const cost = clickUpgradeCost;
+      console.log(`clicks: ${prev}`);
+      console.log(`cost: ${cost}`);
+      
+      if (prev >= cost) {
+        setClickStrength(prevStrength => prevStrength + 1);
+        setClickUpgradeLevel(prevLevel => prevLevel + 1);
+        setClickUpgradeCost(Math.ceil(cost * 1.5));
+        
+        // Remove the current upgrade from the list
+        setUpgrades(prevUpgrades => prevUpgrades.filter(u => u.label !== 'upgrade click'));
+        
+        return prev - cost;
+      }
+      return prev;
+    });
   };
   
-
   useAutoclicker(showPokemon, 5000);
   useAutoclicker(showFrog, 3000);
   useAutoclicker(showNyan, 1000);
 
-  // manages nyan cat upgrade 
-
-  
   // manages clicks per second
   useEffect(() => {
     const interval = setInterval(() => {
@@ -104,13 +109,13 @@ export default function Clicker() {
     }
     
     if (clicks >= 100 && !unlockedUpgrades.includes('nyan cat')) {
-      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.png")
+      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.jpg")
     }
 
   }, [clicks, clickUpgradeCost]);
   
   const handleClick = () => {
-    setClicks(prev => prev + clickStrength.current);
+    setClicks(prev => prev + clickStrength); // Fixed: removed .current
     setClickTimestamps(prev => [...prev, Date.now()])
   }
   
@@ -119,6 +124,7 @@ export default function Clicker() {
       <button className="btn btn-xl" onClick={handleClick}>Click me!</button>
       <h1 className="mt-3 font-bold">{clicks} clicks</h1>
       <h1 className="mt-3 font-bold">Clicks per second: {cps}</h1>
+      <h2 className="mt-2 text-sm">Click Strength: {clickStrength}</h2>
 
       <div className="mt-5 flex gap-5">
         {upgrades.map((upgrade, index) => (
@@ -133,7 +139,6 @@ export default function Clicker() {
               <p className="text-sm"><strong>Cost:</strong> {upgrade.cost}</p>
               <p className="text-sm">{upgrade.description}</p>
             </div>
-
           </div>
         ))}
       </div>
@@ -141,9 +146,8 @@ export default function Clicker() {
       {showPokemon && (
         <div className="absolute right-15 bottom-15">
           <img 
-            // can maybe change this to take in different id's
             src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/versions/generation-v/black-white/animated/385.gif" 
-            alt="Pikachu" 
+            alt="Pokemon" 
             className="scale-200"
           />
         </div>
