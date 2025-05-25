@@ -176,6 +176,9 @@ def get_most_played_game_by_user():
         most_played_game = cursor.fetchone() 
 
 
+        cursor.execute("select * from Games")
+
+
         if most_played_game:
             response_data = {"game_id": most_played_game[0], "game_name": most_played_game[1]}
             return jsonify(response_data)

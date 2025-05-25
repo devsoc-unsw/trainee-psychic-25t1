@@ -1,10 +1,24 @@
 "use client";
 
-import React from 'react';
-import words from './words.json';
-import common from './common.json';
+import React from "react";
+import words from "./words.json";
+import common from "./common.json";
 
-export default function GameHandler({version, setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow, setButtonShow}) {
+export default function GameHandler({
+  version,
+  setCorrectWord,
+  correctWord,
+  setGuessCurr,
+  guessCurr,
+  setGuesses,
+  guesses,
+  setAlert,
+  setAlertShow,
+  winState,
+  setWinState,
+  setPopupShow,
+  setButtonShow,
+}) {
   // New Game: set new word
   React.useEffect(() => {
     if (winState === "play") {
@@ -39,7 +53,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     if (winState !== "play") {
       return;
     }
-    setGuessCurr(prev => prev.length < 5 ? prev + c : prev);
+    setGuessCurr((prev) => (prev.length < 5 ? prev + c : prev));
     setAlertShow(false);
   };
 
@@ -48,7 +62,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     if (winState !== "play") {
       return;
     }
-    setGuessCurr(prev => prev.length > 0 ? prev.slice(0, -1) : prev);
+    setGuessCurr((prev) => (prev.length > 0 ? prev.slice(0, -1) : prev));
     setAlertShow(false);
   };
 
@@ -67,16 +81,16 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
       setAlertShow(true);
       return;
     }
-    setGuesses(prev => [...prev, guessCurr]);
+    setGuesses((prev) => [...prev, guessCurr]);
     setGuessCurr("");
     setAlertShow(false);
-    if(guessCurr === correctWord) {
+    if (guessCurr === correctWord) {
       setWinState("win");
       setTimeout(() => {
         setPopupShow(true);
         setButtonShow(true);
       }, 1800);
-    } else if(guesses.length === 5) {
+    } else if (guesses.length === 5) {
       setWinState("lose");
       setTimeout(() => {
         setPopupShow(true);
@@ -94,7 +108,5 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     }
   };
 
-  return (
-    <></>
-  );
+  return <></>;
 }

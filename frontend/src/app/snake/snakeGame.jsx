@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
+import { uploadGameScore } from "../helpers";
 
 import headImg from "../../../public/images/snake/snake-head.png";
 import bodyImg from "../../../public/images/snake/snake-body.png";
@@ -88,7 +89,7 @@ export default function SnakeGame() {
     drawSnake();
     if (!runningRef.current && (score > 0 || snake.length > 0)) {
       displayGameOver();
-      uploadGameScore(score);
+      uploadGameScore(score, GAME_ID);
     }
   }, [snake, food, running, score]);
 
@@ -214,38 +215,24 @@ export default function SnakeGame() {
     let newVelocity = currentVel;
 
     switch (true) {
-    case (keyPressed === KEY_LEFT || keyPressed === ARROW_LEFT) &&
-      !goingRight:
-      newVelocity = [-UNITSIZE, 0];
-      break;
-    case (keyPressed === KEY_UP || keyPressed === ARROW_UP) && !goingDown:
-      newVelocity = [0, -UNITSIZE];
-      break;
-    case (keyPressed === KEY_RIGHT || keyPressed === ARROW_RIGHT) &&
-      !goingLeft:
-      newVelocity = [UNITSIZE, 0];
-      break;
-    case (keyPressed === KEY_DOWN || keyPressed === ARROW_DOWN) && !goingUp:
-      newVelocity = [0, UNITSIZE];
-      break;
-    default:
-      return;
+      case (keyPressed === KEY_LEFT || keyPressed === ARROW_LEFT) &&
+        !goingRight:
+        newVelocity = [-UNITSIZE, 0];
+        break;
+      case (keyPressed === KEY_UP || keyPressed === ARROW_UP) && !goingDown:
+        newVelocity = [0, -UNITSIZE];
+        break;
+      case (keyPressed === KEY_RIGHT || keyPressed === ARROW_RIGHT) &&
+        !goingLeft:
+        newVelocity = [UNITSIZE, 0];
+        break;
+      case (keyPressed === KEY_DOWN || keyPressed === ARROW_DOWN) && !goingUp:
+        newVelocity = [0, UNITSIZE];
+        break;
+      default:
+        return;
     }
     setVelocity(newVelocity);
-  }
-
-  async function uploadGameScore(score) {
-    if (score > 0) {
-      try {
-        await axios.post(
-          "http://localhost:8000/scores/upload",
-          { game_id: GAME_ID, score },
-          { withCredentials: true }
-        );
-      } catch (error) {
-        console.error("Failed to retrieve scores:", error);
-      }
-    }
   }
 
   return (

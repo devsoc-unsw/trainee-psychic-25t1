@@ -105,7 +105,7 @@ export default function ProfilePage() {
                       onClick={toggleModal}
                       className="cursor-pointer hover:underline"
                     >
-                      {game.name}
+                      {gameDetails[1]}
                     </a>
                   </div>
                   <div>100</div>

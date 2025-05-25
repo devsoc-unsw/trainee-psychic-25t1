@@ -1,7 +1,8 @@
 export default function Popup({ display, close, winState, correctWord }) {
   if (!display) return null;
 
-  const capitalizedWord = correctWord.charAt(0).toUpperCase() + correctWord.slice(1);
+  const capitalizedWord =
+    correctWord.charAt(0).toUpperCase() + correctWord.slice(1);
 
   const content =
     winState === "win" ? (
@@ -9,25 +10,29 @@ export default function Popup({ display, close, winState, correctWord }) {
         <h1 className="text-4xl font-extrabold mb-4 text-center">
           {capitalizedWord}
         </h1>
-        <span className="text-lg text-center block">Great job solving the puzzle!</span>
+        <span className="text-lg text-center block">
+          Great job solving the puzzle!
+        </span>
       </>
     ) : winState === "lose" ? (
       <>
         <h1 className="text-4xl font-extrabold mb-4 text-center">
           {capitalizedWord}
         </h1>
-        <span className="text-lg text-center block">Better luck next time!</span>
+        <span className="text-lg text-center block">
+          Better luck next time!
+        </span>
       </>
     ) : winState === "play" ? (
       <>
-        <h1 className="text-4xl font-extrabold mb-4 text-center">
-          New Round
-        </h1>
-        <span className="text-lg text-center block">Can you solve the next one ?</span>
+        <h1 className="text-4xl font-extrabold mb-4 text-center">New Round</h1>
+        <span className="text-lg text-center block">
+          Can you solve the next one ?
+        </span>
       </>
     ) : (
       <span className="text-center block">Something went wrong.</span>
-    ) ;
+    );
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50">
