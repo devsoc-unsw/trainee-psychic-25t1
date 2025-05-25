@@ -27,7 +27,7 @@ export default function WorldeGameBoard({version}) {
     setButtonShow(false);
     initBlindBoard();
     initLiedleBoard();
-  }
+  };
 
   // blindle board init
   const initBlindBoard = () => {
@@ -36,7 +36,7 @@ export default function WorldeGameBoard({version}) {
       Array.from({length: 5}, () => Math.floor(Math.random() * BLINDLE_DIFFICULTY_MOD) === 0)
     );
     setCustomBoard(temp);
-  }
+  };
   React.useEffect(initBlindBoard, []);
 
   // liedle board init
@@ -44,9 +44,9 @@ export default function WorldeGameBoard({version}) {
     if (version !== "liedle") return;
     const temp = Array.from({length: 6}, () => {
       const randIndex = Math.floor(Math.random() * 5);
-      return Array.from({length: 5}, (_, i) => i === randIndex)});
+      return Array.from({length: 5}, (_, i) => i === randIndex);});
     setCustomBoard(temp);
-  }
+  };
   React.useEffect(initLiedleBoard, []);
   
   // Data for animated title
@@ -72,8 +72,8 @@ export default function WorldeGameBoard({version}) {
       {new Array(6).fill("").map((_, i) => {
         const temp = 
           i === guesses.length ? guessCurr :
-          i < guesses.length ? guesses[i] :
-          "";
+            i < guesses.length ? guesses[i] :
+              "";
         return (
           <div key={i}>
             <Guess 
@@ -85,7 +85,7 @@ export default function WorldeGameBoard({version}) {
               shake={alertShow && i === guesses.length}
             />
           </div>
-        )
+        );
       })}
       <GameHandler 
         version={version}

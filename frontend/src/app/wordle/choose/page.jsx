@@ -9,13 +9,13 @@ import Choose from './Choose';
 export default function Home() {
   const { auth } = useContext(AuthContext);
 
-    if (auth.loading) {
-      return (
-        <div>
-          <Navbar />
-        </div>
-      );
-    }
+  if (auth.loading) {
+    return (
+      <div>
+        <Navbar />
+      </div>
+    );
+  }
 
   return (
     <div>

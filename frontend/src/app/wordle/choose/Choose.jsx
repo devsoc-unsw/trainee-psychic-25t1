@@ -3,10 +3,10 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { useOutsideClick } from "@/hooks/use-outside-click";
-import wordleImage from "@/app/wordle/choose/assets/Wordle.png"
-import hardleImage from "@/app/wordle/choose/assets/Hardle.png"
-import blindleImage from "@/app/wordle/choose/assets/Blindle.png"
-import liedleImage from "@/app/wordle/choose/assets/Liedle.png"
+import wordleImage from "@/app/wordle/choose/assets/Wordle.png";
+import hardleImage from "@/app/wordle/choose/assets/Hardle.png";
+import blindleImage from "@/app/wordle/choose/assets/Blindle.png";
+import liedleImage from "@/app/wordle/choose/assets/Liedle.png";
 import Image from "next/image";
 
 export default function Choose() {
@@ -223,7 +223,7 @@ const cards = [
     content: () => {
       return (
         <p>Guess the hidden five-letter word in six tries. Use the color coded hints after each guess to figure out which letters are correct and in the right spot. Simple and fun.
-          </p>
+        </p>
       );
     },
   },
@@ -236,7 +236,7 @@ const cards = [
     content: () => {
       return (
         <p>A tougher twist on classic Wordle. Hardle challenges you to guess harder, more obscure five-letter words in six tries. Sharpen your vocabulary and put your word skills to the test.
-          </p>
+        </p>
       );
     },
   },
@@ -250,7 +250,7 @@ const cards = [
     content: () => {
       return (
         <p>In Blindle, some tiles stay hidden. Blind tiles will not change color or display a letter. A challenging spin on the classic word game.
-          </p>
+        </p>
       );
     },
   },
@@ -263,7 +263,7 @@ const cards = [
     content: () => {
       return (
         <p>In Liedle, every guess shows one color hint incorrectly. Test your deduction skills on this deceptive spin of the game. Can you outsmart the Lidle.
-          </p>
+        </p>
       );
     },
   },

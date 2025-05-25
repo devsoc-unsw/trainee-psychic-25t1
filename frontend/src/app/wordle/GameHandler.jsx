@@ -1,8 +1,8 @@
-"use client"
+"use client";
 
-import React from 'react'
-import words from './words.json'
-import common from './common.json'
+import React from 'react';
+import words from './words.json';
+import common from './common.json';
 
 export default function GameHandler({version, setCorrectWord, correctWord, setGuessCurr, guessCurr, setGuesses, guesses, setAlert, setAlertShow, winState, setWinState, setPopupShow, setButtonShow}) {
   // New Game: set new word
@@ -10,7 +10,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     if (winState === "play") {
       getWord();
     }
-  }, [winState])
+  }, [winState]);
 
   // Mount keyboard listener
   React.useEffect(() => {
@@ -25,14 +25,14 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
       if (key === "Enter") {
         checkValidEnter();
       }
-    }
+    };
 
     window.addEventListener("keydown", handleKeydown);
 
     return () => {
       window.removeEventListener("keydown", handleKeydown);
-    }
-  }, [guessCurr, winState, guesses])
+    };
+  }, [guessCurr, winState, guesses]);
 
   // Update current guess
   const checkValidUpdate = (c) => {
@@ -41,7 +41,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     }
     setGuessCurr(prev => prev.length < 5 ? prev + c : prev);
     setAlertShow(false);
-  }
+  };
 
   // Handle backspace
   const checkValidBackspace = () => {
@@ -50,7 +50,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     }
     setGuessCurr(prev => prev.length > 0 ? prev.slice(0, -1) : prev);
     setAlertShow(false);
-  }
+  };
 
   // Handle enter
   const checkValidEnter = () => {
@@ -83,7 +83,7 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
         setButtonShow(true);
       }, 1800);
     }
-  }
+  };
 
   // Retrieve word from database
   const getWord = () => {
@@ -92,9 +92,9 @@ export default function GameHandler({version, setCorrectWord, correctWord, setGu
     } else {
       setCorrectWord(common[Math.trunc(Math.random() * common.length)]);
     }
-  }
+  };
 
   return (
     <></>
-  )
+  );
 }

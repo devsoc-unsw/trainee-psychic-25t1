@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 export default function Popup({gameOver, close}) {
   return (
@@ -7,17 +7,17 @@ export default function Popup({gameOver, close}) {
       <div className="relative z-10 bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full text-center h-50">
         {gameOver ? 
           <>
-          <h1 className="text-4xl font-extrabold mb-4 text-center">
+            <h1 className="text-4xl font-extrabold mb-4 text-center">
             Game Over!
-          </h1>
-          <span className="text-lg text-center block">Better luck next time!</span>
+            </h1>
+            <span className="text-lg text-center block">Better luck next time!</span>
           </> : 
-         <>
-          <h1 className="text-4xl font-extrabold mb-4 text-center">
+          <>
+            <h1 className="text-4xl font-extrabold mb-4 text-center">
             You Win !
-          </h1>
-          <span className="text-lg text-center block">Can you solve the next one ?</span>
-        </>}
+            </h1>
+            <span className="text-lg text-center block">Can you solve the next one ?</span>
+          </>}
         <button
           onClick={close}
           className="absolute top-2 right-4 text-gray-500 hover:text-black font-extrabold text-3xl"

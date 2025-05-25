@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import "./styles.css"
+import "./styles.css";
 
 // Tile Component
 function Tile({letter, colour, flip, index, shake}) {
@@ -28,7 +28,7 @@ const getLieColour = (colour, index) => {
   const colours = ["bg-green-600", "bg-yellow-500", "bg-gray-600"];
   const wrongColours = colours.filter(c => c !== colour);
   return wrongColours[index % 2];
-}
+};
 
 // Prints 5 tiles which can each contain a letter
 export default function Guess({version, customRow, correctWord, guess, display, shake}) {
@@ -39,18 +39,18 @@ export default function Guess({version, customRow, correctWord, guess, display, 
       {new Array(5).fill("").map((_, i) => {
         const colour = 
           !display ? "bg-black" :
-          correctWord[i] == guess[i] ? "bg-green-600" :
-          correctWord.includes(guess[i]) ? "bg-yellow-500" :
-          "bg-gray-600"
+            correctWord[i] == guess[i] ? "bg-green-600" :
+              correctWord.includes(guess[i]) ? "bg-yellow-500" :
+                "bg-gray-600";
 
         return (
           version === "blindle" && customRow[i] ? 
-          <Tile key={i} letter={"X"} colour={"bg-black"} flip={display} index={i} shake={shake}/> :
-          version === "liedle" && customRow[i] ? 
-          <Tile key={i} letter={guess[i]} colour={getLieColour(colour, i)} flip={display} index={i} shake={shake}/> :
-          <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i} shake={shake}/>
-        )
+            <Tile key={i} letter={"X"} colour={"bg-black"} flip={display} index={i} shake={shake}/> :
+            version === "liedle" && customRow[i] ? 
+              <Tile key={i} letter={guess[i]} colour={getLieColour(colour, i)} flip={display} index={i} shake={shake}/> :
+              <Tile key={i} letter={guess[i]} colour={colour} flip={display} index={i} shake={shake}/>
+        );
       })}
     </div> 
-  )
+  );
 }

@@ -115,7 +115,7 @@ export default function Quiz({ locations }) {
 
     setUNSWLocations(newArray);
     setLocationIndex(0);
-  }
+  };
 
   return (
     <div className="flex justify-center items-center h-screen">

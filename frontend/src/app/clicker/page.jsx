@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from "react";
 
@@ -44,8 +44,8 @@ export default function Clicker() {
       }, intervalMs);
 
       return () => clearInterval(interval);
-    }, [enabled, intervalMs])
-  }
+    }, [enabled, intervalMs]);
+  };
 
   // Fixed purchaseClickUpgrade function
   const purchaseClickUpgrade = () => {
@@ -75,10 +75,10 @@ export default function Clicker() {
   // manages clicks per second
   useEffect(() => {
     const interval = setInterval(() => {
-      const now = Date.now()
+      const now = Date.now();
       const oneSecondAgo = now - 1000;
 
-      const recentClicks = clickTimestamps.filter(prev => prev > oneSecondAgo)
+      const recentClicks = clickTimestamps.filter(prev => prev > oneSecondAgo);
       setClickTimestamps(recentClicks);
       setCps(recentClicks.length);
     }, 100);
@@ -109,15 +109,15 @@ export default function Clicker() {
     }
     
     if (clicks >= 100 && !unlockedUpgrades.includes('nyan cat')) {
-      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.jpg")
+      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.jpg");
     }
 
   }, [clicks, clickUpgradeCost]);
   
   const handleClick = () => {
     setClicks(prev => prev + clickStrength); // Fixed: removed .current
-    setClickTimestamps(prev => [...prev, Date.now()])
-  }
+    setClickTimestamps(prev => [...prev, Date.now()]);
+  };
   
   return (
     <div className="flex flex-col justify-center items-center h-screen relative">
