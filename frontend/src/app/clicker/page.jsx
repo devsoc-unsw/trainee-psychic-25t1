@@ -13,10 +13,11 @@ export default function Clicker() {
   const [clickUpgradeCost, setClickUpgradeCost] = useState(20);
   const [showPokemon, setShowPokemon] = useState(false);
   const [showFrog, setShowFrog] = useState(false);
+  const [showNyan, setShowNyan] = useState(false);
 
   // helper functions
   const registerUpgrade = (label, cost, description, onClick, img) => {
-    if (!unlockedUpgrades.includes(label)) {
+    if (!unlockedUpgrades.includes(label) && !upgrades.find(u => u.label === label)) {
       const upgrade = { label, cost, description, onClick, img };
       setUpgrades(prev => [...prev, upgrade]);
       setUnlockedUpgrades(prev => [...prev, label]);
@@ -34,31 +35,44 @@ export default function Clicker() {
     });
   };  
 
+  const useAutoclicker = (enabled, intervalMs) => {
+    useEffect(() => {
+      if (!enabled) return;
+
+      const interval = setInterval(() => {
+        setClicks(prev => prev + 1);
+      }, intervalMs);
+
+    }, [enabled, intervalMs])
+  }
+
   // ts is not working hell nah 
   const purchaseClickUpgrade = () => {
     const cost = clickUpgradeCost; 
-
+  
+    console.log(`clicks: ${clicks}`);
+    console.log(cost);
+  
     setClicks(prev => {
       if (prev >= cost) {
         setClickStrength(prev => prev + 1);
         setClickUpgradeLevel(prev => prev + 1);
         setClickUpgradeCost(Math.ceil(cost * 1.5));
+        setUpgrades(prev => prev.filter(u => u.label !== 'upgrade click'));
+        
         return prev - cost;
       }
       return prev;
     });
   };
-
-  // manages pokemon upgrade
-  useEffect(() => {
-    if (!showPokemon) return;
-
-    const interval = setInterval(() => {
-      setClicks(prev => prev + 1);
-    }, 5000);
   
-    return () => clearInterval(interval); 
-  }, [showPokemon]);
+
+  useAutoclicker(showPokemon, 5000);
+  useAutoclicker(showFrog, 3000);
+  useAutoclicker(showNyan, 1000);
+
+  // manages nyan cat upgrade 
+
   
   // manages clicks per second
   useEffect(() => {
@@ -86,10 +100,21 @@ export default function Clicker() {
     }
 
     if (clicks >= 20 && !upgrades.find(u => u.label === 'upgrade click')) {
-      registerUpgrade('upgrade click', clickUpgradeCost, 'Increases click strength by 1', purchaseClickUpgrade, "/images/click.png");
+      const upgrade = { 
+        label: 'upgrade click', 
+        cost: clickUpgradeCost, 
+        description: 'Increases click strength by 1', 
+        onClick: purchaseClickUpgrade, 
+        img: "/images/click.png" 
+      };
+      setUpgrades(prev => [...prev, upgrade]);
+    }
+    
+    if (clicks >= 100 && !unlockedUpgrades.includes('nyan cat')) {
+      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.png")
     }
 
-  }, [clicks, upgrades, unlockedUpgrades]);
+  }, [clicks, clickUpgradeCost]);
   
   const handleClick = () => {
     setClicks(prev => prev + clickStrength);
@@ -133,13 +158,24 @@ export default function Clicker() {
 
       {showFrog && (
         <div className="absolute left-15 bottom-15">
-        <iframe 
-          width="250" 
-          height="140" 
-          src="https://www.youtube.com/embed/aQ6eKfty_Ig?autoplay=1&mute=1&loop=1&playlist=aQ6eKfty_Ig" 
-          allow="autoplay; encrypted-media" 
-        ></iframe>
-      </div>
+          <iframe 
+            width="250" 
+            height="140" 
+            src="https://www.youtube.com/embed/aQ6eKfty_Ig?autoplay=1&mute=1&loop=1&playlist=aQ6eKfty_Ig" 
+            allow="autoplay; encrypted-media" 
+          ></iframe>
+        </div>
+      )}
+
+      {showNyan && (
+        <div className="absolute top-15 left-15">
+          <iframe 
+            width="250" 
+            height="140" 
+            src="https://www.youtube.com/embed/2yJgwwDcgV8?autoplay=1&mute=1&loop=1&playlist=2yJgwwDcgV8" 
+            allow="autoplay; encrypted-media" 
+          ></iframe>
+        </div>
       )}
     </div>
   );
