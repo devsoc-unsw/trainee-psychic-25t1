@@ -25,6 +25,7 @@ export default function Snake() {
       <LeaderboardModal />
       {auth.isAuthenticated ? (
         <>  
+          <br /><br /><br />
           <SnakeGame />
         </>
       ) : (
@@ -34,4 +35,4 @@ export default function Snake() {
       )}
     </div>
   );
-}
+} 

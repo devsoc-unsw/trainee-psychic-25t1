@@ -212,16 +212,6 @@ export default function SnakeGame() {
     setVelocity(newVelocity);
   }
 
-
-  function displayGameOver() {
-    const ctx = ctxRef.current;
-    if (!ctx) return;
-    ctx.font = "50px 'MV Boli', cursive";
-    ctx.fillStyle = "black";
-    ctx.textAlign = "center";
-    ctx.fillText("GAME OVER!", gameWidth / 2, gameHeight / 2);
-  }
-
   async function uploadGameScore(score) {
     if (score > 0) {
       try {
@@ -246,13 +236,13 @@ export default function SnakeGame() {
         tabIndex={0}
         onKeyDown={changeDirection}
       />
-      <div className="text-[100px] font-['Permanent_Marker',_cursive]">{score}</div>
+      <div className="text-[85px] font-[Roboto, sans-serif] font-medium">{score}</div>
       <button
         id="resetBtn"
         onClick={gameStart}
         className="btn btn-neutral"
       >
-        Reset
+        Play Again
       </button>
     </div>
   );
@@ -395,4 +385,37 @@ export default function SnakeGame() {
       }
     }
   }
+
+  function displayGameOver() {
+  const ctx = ctxRef.current;
+  if (!ctx) return;
+
+  ctx.fillStyle = "rgba(0, 0, 0, 0.6)";
+  ctx.fillRect(0, 0, gameWidth, gameHeight);
+  
+  const boxWidth = 300;
+  const boxHeight = 120;
+  const x = (gameWidth - boxWidth) / 2;
+  const y = (gameHeight - boxHeight) / 2;
+  const radius = 20;
+
+  ctx.fillStyle = "#fff";
+  ctx.beginPath();
+  ctx.moveTo(x + radius, y);
+  ctx.lineTo(x + boxWidth - radius, y);
+  ctx.quadraticCurveTo(x + boxWidth, y, x + boxWidth, y + radius);
+  ctx.lineTo(x + boxWidth, y + boxHeight - radius);
+  ctx.quadraticCurveTo(x + boxWidth, y + boxHeight, x + boxWidth - radius, y + boxHeight);
+  ctx.lineTo(x + radius, y + boxHeight);
+  ctx.quadraticCurveTo(x, y + boxHeight, x, y + boxHeight - radius);
+  ctx.lineTo(x, y + radius);
+  ctx.quadraticCurveTo(x, y, x + radius, y);
+  ctx.closePath();
+  ctx.fill();
+
+  ctx.fillStyle = "#222";
+  ctx.font = "bold 36px 'Roboto', sans-serif";
+  ctx.textAlign = "center";
+  ctx.fillText("GAME OVER", gameWidth / 2, gameHeight / 2 + 10);
+}
 }
