@@ -236,6 +236,7 @@ export default function SnakeGame() {
         tabIndex={0}
         onKeyDown={changeDirection}
       />
+      <br />
       <div className="text-[85px] font-[Roboto, sans-serif] font-medium">{score}</div>
       <button
         id="resetBtn"
