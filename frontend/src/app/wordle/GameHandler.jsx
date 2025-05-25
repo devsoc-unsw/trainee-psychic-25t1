@@ -4,6 +4,8 @@ import React from "react";
 import words from "./words.json";
 import common from "./common.json";
 
+const GAME_ID = 1;
+
 export default function GameHandler({
   version,
   setCorrectWord,
@@ -86,6 +88,7 @@ export default function GameHandler({
     setAlertShow(false);
     if (guessCurr === correctWord) {
       setWinState("win");
+      uploadGameScore(1, GAME_ID);
       setTimeout(() => {
         setPopupShow(true);
         setButtonShow(true);
