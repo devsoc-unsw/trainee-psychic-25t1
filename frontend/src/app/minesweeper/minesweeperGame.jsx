@@ -62,9 +62,9 @@ export default function MineSweeperPage() {
 
       const cur = board[i][j];
 
-      //////////////////////////////
-      /// Styling with alternating colors
-      //////////////////////////////
+      ///////////////////////////////////////////
+      /// Styling changes
+      ///////////////////////////////////////////
 
       const isLightTile = (i + j) % 2 === 0;
 
@@ -82,8 +82,9 @@ export default function MineSweeperPage() {
         <div
           key={uniqueKey}
           id={cellId}
-          className="w-10 h-10 flex items-center justify-center text-white bg-black border border-red-700 select-none"
+          className="w-10 h-10 flex items-center justify-center text-white bg-[#fff8f8] border-[#000000] border select-none"
         >
+          Bomb
         </div>
       );
 
