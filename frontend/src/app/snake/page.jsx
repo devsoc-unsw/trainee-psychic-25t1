@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useContext } from 'react';
-import { AuthContext } from '@/components/AuthContext';
-import Navbar from '../Navbar';
-import LeaderboardModal from '../Leaderboard';
-import SnakeGame from './snakeGame';
+import { useContext } from "react";
+import { AuthContext } from "@/components/AuthContext";
+import Navbar from "../Navbar";
+import LeaderboardModal from "../Leaderboard";
+import SnakeGame from "./snakeGame";
 
 export default function Snake() {
   const { auth } = useContext(AuthContext);
@@ -24,8 +24,10 @@ export default function Snake() {
       <Navbar />
       <LeaderboardModal />
       {auth.isAuthenticated ? (
-        <>  
-          <br /><br /><br />
+        <>
+          <br />
+          <br />
+          <br />
           <SnakeGame />
         </>
       ) : (
@@ -35,4 +37,4 @@ export default function Snake() {
       )}
     </div>
   );
-} 
+}

@@ -1,3 +1,5 @@
+import logging
+
 from flask import Blueprint, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -7,6 +9,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO,filename='log.log', filemode='w')
 
 CONFIG = {
     'user': os.getenv('DB_USER'),
@@ -182,17 +186,26 @@ def get_scores():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        query = """select user_id, sum(score) from scores"""
+        query = """select s.user_id, u.name, sum(score) from Scores s
+        join Users u on
+        u.id = s.user_id
+        group by s.user_id, u.name"""
 
         cur.execute(query)
 
         res = cur.fetchall()
         conn.commit()
+        print("hey")
         print(res)
-        return jsonify({res})
+
+        for item in res:
+            print(item)
+
+        scores_list = [{"username": row[1], "score": row[2]} for row in res]
+        return jsonify({"scores": scores_list})
     except Exception as e:
         print(f"Error {e}")
-        return jsonify({"msg": "Error"}), 500
+        return jsonify({"msg": e}), 500
     finally:
         cur.close()
         conn.close()

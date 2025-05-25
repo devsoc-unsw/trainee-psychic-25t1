@@ -1,16 +1,18 @@
 import axios from "axios";
+import { useState } from "react";
 
-export default function LeaderBoard(props) {
+export default function LeaderBoard() {
+  const [scores, setScores] = useState([]);
+
   function organise_data() {
-    const data = props.scores;
-    const sorted_data = data.sort((a, b) => b.score - a.score);
-
     getScores();
 
-    return sorted_data.map((item, index) => (
+    let clonedArray = JSON.parse(JSON.stringify(scores));
+
+    return [...clonedArray].map((item, index) => (
       <tr key={item.id}>
         <th>{index + 1}</th>
-        <td>{item.name}</td>
+        <td>{item.username}</td>
         <td>{item.score}</td>
       </tr>
     ));
@@ -18,9 +20,10 @@ export default function LeaderBoard(props) {
 
   async function getScores() {
     try {
-      await axios.get("http://localhost:8000/scores/get", {
+      const response = await axios.get("http://localhost:8000/scores/get", {
         withCredentials: true,
       });
+      setScores(response.data.scores);
     } catch (error) {
       console.error("Failed to upload score: ", error);
     }
