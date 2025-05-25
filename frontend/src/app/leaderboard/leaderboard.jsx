@@ -7,10 +7,12 @@ export default function LeaderBoard() {
   function organise_data() {
     getScores();
 
-    let clonedArray = JSON.parse(JSON.stringify(scores));
+    let topTen = JSON.parse(JSON.stringify(scores))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 9);
 
-    return [...clonedArray].map((item, index) => (
-      <tr key={item.id}>
+    return [...topTen].map((item, index) => (
+      <tr key={item.user_id}>
         <th>{index + 1}</th>
         <td>{item.username}</td>
         <td>{item.score}</td>
