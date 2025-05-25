@@ -1,3 +1,5 @@
+import logging
+
 from flask import Blueprint, jsonify, request
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -7,6 +9,8 @@ from dotenv import load_dotenv
 import os
 
 load_dotenv()
+
+logging.basicConfig(level=logging.INFO,filename='log.log', filemode='w')
 
 CONFIG = {
     'user': os.getenv('DB_USER'),
@@ -23,7 +27,11 @@ bcrypt = Bcrypt()
 def get_db_connection():
     return mysql.connector.connect(**CONFIG)
 
-"""
+
+@score_bp.route('/scores/upload', methods=['POST'])
+@jwt_required()
+def upload_score():
+    """
     Upload the game score
     ---
     Uploads the score for the given game_id, using the JWT
@@ -38,10 +46,7 @@ def get_db_connection():
     - 401 Unauthorized: Invalid credentials
     - 404 Not Found: No game_id found with the given game_id
     - 500 Internal Server Error: Database or server error
-"""
-@score_bp.route('/scores/upload', methods=['POST'])
-@jwt_required()
-def upload_score():
+    """
     current_user_id = get_jwt_identity()
     data = request.get_json()
 
@@ -166,4 +171,41 @@ def get_most_played_game_by_user():
         return jsonify({"msg": "Error"}), 500
     finally:
         cursor.close()
+        conn.close()
+
+
+@score_bp.route('/scores/get', methods=['GET'])
+@jwt_required()
+def get_scores():
+    current_user_id = get_jwt_identity()
+    # data = request.get_json()
+
+    print("hi")
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        query = """select s.user_id, u.name, sum(score) from Scores s
+        join Users u on
+        u.id = s.user_id
+        group by s.user_id, u.name"""
+
+        cur.execute(query)
+
+        res = cur.fetchall()
+        conn.commit()
+        print("hey")
+        print(res)
+
+        for item in res:
+            print(item)
+
+        scores_list = [{"username": row[1], "score": row[2]} for row in res]
+        return jsonify({"scores": scores_list})
+    except Exception as e:
+        print(f"Error {e}")
+        return jsonify({"msg": e}), 500
+    finally:
+        cur.close()
         conn.close()

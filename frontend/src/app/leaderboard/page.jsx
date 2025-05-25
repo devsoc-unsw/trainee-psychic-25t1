@@ -6,7 +6,7 @@ export default function LeaderboardPage() {
   // website "box"
     <div className="flex flex-col space-x-4">
       <div>
-        <LeaderBoard scores={data}/>
+        <LeaderBoard/>
       </div>
     </div>
   );

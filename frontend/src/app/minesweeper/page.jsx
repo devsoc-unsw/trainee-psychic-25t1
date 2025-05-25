@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useContext } from 'react';
-import { AuthContext } from '@/components/AuthContext';
-import Navbar from '../Navbar';
-import LeaderboardModal from '../Leaderboard';
-import MineSweeperPage from './minesweeperGame';
+import { useContext } from "react";
+import { AuthContext } from "@/components/AuthContext";
+import Navbar from "../Navbar";
+import LeaderboardModal from "../Leaderboard";
+import MineSweeperPage from "./minesweeperGame";
 
 export default function Minesweeper() {
   const { auth } = useContext(AuthContext);
@@ -24,8 +24,10 @@ export default function Minesweeper() {
       <Navbar />
       <LeaderboardModal />
       {auth.isAuthenticated ? (
-        <>  
-          <br /><br /><br />
+        <>
+          <br />
+          <br />
+          <br />
           <MineSweeperPage />
         </>
       ) : (
@@ -35,4 +37,4 @@ export default function Minesweeper() {
       )}
     </div>
   );
-} 
+}

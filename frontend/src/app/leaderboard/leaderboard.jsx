@@ -1,16 +1,35 @@
-export default function LeaderBoard(props) {
+import axios from "axios";
+import { useState } from "react";
+
+export default function LeaderBoard() {
+  const [scores, setScores] = useState([]);
+
   function organise_data() {
-    const data = props.scores;
-    const sorted_data = data.sort((a, b) => b.score - a.score);
-	
-    return sorted_data.map((item, index) => (
-      <tr key={item.id}>
+    getScores();
+
+    let topTen = JSON.parse(JSON.stringify(scores))
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 9);
+
+    return [...topTen].map((item, index) => (
+      <tr key={item.user_id}>
         <th>{index + 1}</th>
-        <td>{item.name}</td>
+        <td>{item.username}</td>
         <td>{item.score}</td>
       </tr>
     ));
-  }	
+  }
+
+  async function getScores() {
+    try {
+      const response = await axios.get("http://localhost:8000/scores/get", {
+        withCredentials: true,
+      });
+      setScores(response.data.scores);
+    } catch (error) {
+      console.error("Failed to upload score: ", error);
+    }
+  }
 
   return (
     <div className="overflow-x-auto">
