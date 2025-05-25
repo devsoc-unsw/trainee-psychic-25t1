@@ -7,6 +7,8 @@ import GameHandler from "./GameHandler";
 import Alert from "./Alert";
 import Popup from "./Popup";
 
+const GAME_ID = 1;
+
 export default function WorldeGameBoard({ version }) {
   const BLINDLE_DIFFICULTY_MOD = 6; // smaller number is harder
   const [correctWord, setCorrectWord] = React.useState(null);

@@ -1,13 +1,15 @@
 "use client";
 import axios from "axios";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
-
+import { useRouter } from "next/navigation";
 import games from "../game/games_info.json";
 
 export default function ProfilePage() {
   const [userDetails, setUserDetails] = useState([null, null, null]);
-  const [gameDetails, setGameDetails] = useState([null, null]);
+  const [gameID, setgameID] = useState(null);
+  const [gameDetails, setGameDetails] = useState(null);
+  const [gameScore, setGameScore] = useState(null);
 
   function toggleModal() {
     const dialogElement = document.getElementById("my_modal_3");
@@ -20,36 +22,44 @@ export default function ProfilePage() {
     }
   }
 
-  async function getUserDetails() {
-    try {
-      const response = await axios.get("http://localhost:8000/auth/status", {
-        withCredentials: true,
-      });
-      const { age, email, id, name } = response.data.user;
-      setUserDetails([email, name]);
-    } catch (error) {
-      console.error("Failed to get status: ", error);
-    }
-  }
-  async function frequentlyPLayed() {
-    try {
-      const response = await axios.get(
-        "http://localhost:8000/scores/user/most_played",
-        {
+  useEffect(() => {
+    async function getUserDetails() {
+      try {
+        const response = await axios.get("http://localhost:8000/auth/status", {
           withCredentials: true,
-        }
-      );
-      setGameDetails([response.data.game_id, response.data.game_name]);
-    } catch (error) {
-      console.error("Failed to get status: ", error);
+        });
+        setUserDetails(response.data.user);
+      } catch (error) {
+        console.error("Failed to get status: ", error);
+      }
     }
-  }
-
-  function GameInfoModal(props) {
-    const { game } = props;
 
     getUserDetails();
+  }, []);
+
+  useEffect(() => {
+    async function frequentlyPLayed() {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/scores/user/most_played",
+          {
+            withCredentials: true,
+          }
+        );
+        const { game_id, score } = response.data;
+        setgameID(game_id);
+        setGameScore(score);
+      } catch (error) {
+        console.error("Failed to get status: ", error);
+      }
+    }
+
     frequentlyPLayed();
+  }, []);
+
+  function GameInfoModal(props) {
+    const navigate = useRouter();
+
     return (
       <>
         <dialog id="my_modal_3" className="modal">
@@ -59,19 +69,31 @@ export default function ProfilePage() {
                 ✕
               </button>
             </form>
-            <h3 className="font-bold text-lg">{gameDetails[1]}</h3>
-            <p className="py-4">{game.description}</p>
-            <button className="btn btn-primary">Play</button>
+            <h3 className="font-bold text-lg">Game Details</h3>
+            <p className="py-4">{gameDetails?.description || "description"}</p>
+            <button
+              onClick={() => navigate.push(gameDetails.route)}
+              className="btn btn-primary"
+            >
+              Play
+            </button>
           </div>
         </dialog>
       </>
     );
   }
 
-  function UserInfo(props) {
-    const { game } = props;
-    console.log(games);
+  useEffect(() => {
+    async function getGameDetails() {
+      const game = games.find((element) => element.id === gameID);
+      // console.log("hey");
+      // console.log(game);
+      setGameDetails(game);
+    }
+    getGameDetails();
+  }, [gameID]);
 
+  function UserInfo() {
     return (
       <div className="hero-content text-center ">
         <div className="w-[500px]">
@@ -84,10 +106,10 @@ export default function ProfilePage() {
               </div>
               <div>
                 <p className="leading-7 mb-2 [&:not(:first-child)]:mt-6">
-                  {userDetails[1]}
+                  {userDetails?.name || "Loading..."}
                 </p>
                 <p className="text-sm text-zinc-700 leading-none">
-                  {userDetails[0]}
+                  {userDetails?.email || "Loading..."}
                 </p>
               </div>
             </div>
@@ -97,7 +119,7 @@ export default function ProfilePage() {
                 <div className="flex flex-col flex-[1] pr-2">
                   <div className="font-medium">Most played game:</div>
                   <div className="font-medium">Score:</div>
-                  <div className="font-medium">Date Registered:</div>
+                  <div className="font-medium">Age:</div>
                 </div>
                 <div className="flex flex-col flex-[1.5] pl-2">
                   <div>
@@ -105,11 +127,11 @@ export default function ProfilePage() {
                       onClick={toggleModal}
                       className="cursor-pointer hover:underline"
                     >
-                      {gameDetails[1]}
+                      {gameDetails?.name || "Loading..."}
                     </a>
                   </div>
-                  <div>100</div>
-                  <div>Some date</div>
+                  <div>{gameScore || "Loading... "}</div>
+                  <div>{userDetails?.age || "Loading..."}</div>
                 </div>
               </div>
             </div>
@@ -121,8 +143,7 @@ export default function ProfilePage() {
 
   // TODO: find out the player's most played game.
   // make a call to the backend to get the player's most played game.
-  const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
-
+  // const mostPlayedGame = games[Math.floor(Math.random() * games.length)];
   return (
     <div
       className="hero min-h-screen"
@@ -130,8 +151,8 @@ export default function ProfilePage() {
         backgroundImage: "url(/images/arcade.jpg)",
       }}
     >
-      <UserInfo game={mostPlayedGame} />
-      <GameInfoModal game={mostPlayedGame} />
+      <UserInfo />
+      <GameInfoModal />
     </div>
   );
 }

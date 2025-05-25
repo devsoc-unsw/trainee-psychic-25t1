@@ -9,7 +9,7 @@
     "id": 2,
     "name": "Snake",
     "description": "An awesome Snake game",
-    "route": "TBA"
+    "route": "/snake"
   },
   {
     "id": 3,

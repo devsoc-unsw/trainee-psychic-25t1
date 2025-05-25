@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 
+const GAME_ID = 5;
+
 export default function Clicker() {
   const [clicks, setClicks] = useState(0);
   const [clickTimestamps, setClickTimestamps] = useState([]);

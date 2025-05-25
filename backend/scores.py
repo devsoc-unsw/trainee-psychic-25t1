@@ -154,33 +154,31 @@ def get_most_played_game_by_user():
         cursor = conn.cursor()
 
         query = """
-        select game_id, G.name
+        select
+            s.game_id,
+            sum(s.score) AS total_score_for_most_played_game 
         from Scores AS s
-        join Games AS G ON s.game_id = G.id
-        where s.user_id = %s
-        group by game_id, G.name
-        having count(*) = (
-            select max(sub_count)
+        join Games AS G on s.game_id = G.id
+        where s.user_id = %s  
+        group by s.game_id, G.name
+        having count(s.game_id) = (
+            select max(play_count) 
             from (
-                select count(*) AS sub_count
+                select game_id, COUNT(*) AS play_count
                 from Scores
-                where user_id = %s
+                where user_id = %s 
                 group by game_id
-            ) AS user_game_counts
+            ) as UserMaxPlayCounts 
         )
-        order by count(*) desc
-        limit 1
+        order by count(s.game_id) desc
+        limit 1; 
         """
 
         cursor.execute(query, (current_user_id, current_user_id))
         most_played_game = cursor.fetchone() 
 
-
-        cursor.execute("select * from Games")
-
-
         if most_played_game:
-            response_data = {"game_id": most_played_game[0], "game_name": most_played_game[1]}
+            response_data = {"game_id": most_played_game[0], "score": most_played_game[1]}
             return jsonify(response_data)
         else:
             return jsonify({"msg": "No most played game found for this user."}), 404
