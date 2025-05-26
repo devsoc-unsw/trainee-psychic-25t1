@@ -1,10 +1,7 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import './styles.css';
-// import Marquee from "react-fast-marquee";
-// import axios from "Axios";
-// import { uploadGameScore } from "../helpers";
   
 const GAME_ID = 5;
 
@@ -16,14 +13,16 @@ export default function ClickerGame() {
   const [unlockedUpgrades, setUnlockedUpgrades] = useState([]);
   const [clickStrength, setClickStrength] = useState(1);
   const [clickUpgradeCost, setClickUpgradeCost] = useState(20);
+  const [isShaking, setIsShaking] = useState(false);
   const [showPokemon, setShowPokemon] = useState(false);
   const [showFrog, setShowFrog] = useState(false);
   const [showNyan, setShowNyan] = useState(false);
-  const [marquee, setMarquee] = useState(false);
+  const [audioWaves, setAudioWaves] = useState(false);
+  const [shake, setShake] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [startTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(null);
-
+  const audioRef = useRef(null);
 
   // helper functions
   const registerUpgrade = (label, cost, description, onClick, img) => {
@@ -51,6 +50,7 @@ export default function ClickerGame() {
 
       const interval = setInterval(() => {
         setClicks(prev => prev + 1);
+        setClickTimestamps(prev => [...prev, Date.now()]);
       }, intervalMs);
 
       return () => clearInterval(interval);
@@ -77,7 +77,21 @@ export default function ClickerGame() {
   
   useAutoclicker(showPokemon, 5000);
   useAutoclicker(showFrog, 3000);
-  useAutoclicker(showNyan, 1000); // + 1 click a second 
+  useAutoclicker(showNyan, 1000);
+  useAutoclicker(audioWaves, 200);
+  useAutoclicker(shake, 100);
+
+  // manages audio for waves
+  useEffect(() => {
+    if (audioWaves && audioRef.current) {
+      const playPromise = audioRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((err) => {
+          console.warn("Audio play was blocked by the browser:", err);
+        });
+      }
+    }
+  }, [audioWaves]);
 
   // manages clicks per second
   useEffect(() => {
@@ -116,13 +130,21 @@ export default function ClickerGame() {
     }
     
     if (clicks >= 100 && !unlockedUpgrades.includes('nyan cat')) {
-      registerUpgrade('nyan cat', 100, 'surprise', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.jpg");
+      registerUpgrade('nyan cat', 100, 'surprise! (+1 click per second)', () => purchaseUpgrade(100, setShowNyan, 'nyan cat'), "/images/nyancat.jpg");
     }
 
-    // if (clicks >= 50 && !gameOver) {
-    //   setGameOver(true);
-    //   setEndTime(Date.now);
-    // }
+    if (clicks >= 250 && !unlockedUpgrades.includes('waves')) {
+      registerUpgrade('waves', 250, 'just chill... (+5 clicks per second)', () => purchaseUpgrade(250, setAudioWaves, 'waves'), "/images/waves.jpg");
+    }
+
+    if (clicks >= 500 && !unlockedUpgrades.includes('shake')) {
+      registerUpgrade('shake', 500, 'something big is coming... (+10 clicks per second)', () => purchaseUpgrade(500, setShake, 'shake'), "/images/shake.jpg");
+    }
+
+    if (clicks >= 1000 && !gameOver) {
+      setGameOver(true);
+      setEndTime(Date.now);
+    }
 
   }, [clicks, clickUpgradeCost]);
   
@@ -130,11 +152,16 @@ export default function ClickerGame() {
     if (gameOver) return;
     setClicks(prev => prev + clickStrength);
     setClickTimestamps(prev => [...prev, Date.now()]);
+
+    if (shake) {
+      setIsShaking(true);
+      setTimeout(() => setIsShaking(false), 300);
+    }
   };
   
   return (
     <div className="flex flex-col justify-center items-center h-full relative">
-      <button className={`btn btn-xl ${showNyan ? 'rainbow-text' : ''}`} onClick={handleClick}>Click me!</button>
+      <button className={`btn btn-xl transition-all ${isShaking ? "animate-shake" : ""} ${showNyan ? 'rainbow-text' : ''}`} onClick={handleClick}>Click me!</button>
       <h1 className="mt-3 font-bold">{clicks} clicks</h1>
       <h1 className="mt-3 font-bold">Clicks per second: {cps}</h1>
       <h2 className="mt-2 text-sm">Click Strength: {clickStrength}</h2>
@@ -146,7 +173,7 @@ export default function ClickerGame() {
               className="btn btn-xl btn-square flex justify-center items-center p-1"
               onClick={upgrade.onClick}
             >
-              <img src={upgrade.img} alt={upgrade.label} className="max-w-full max-h-full object-contain"/>              
+              <img src={upgrade.img} alt={upgrade.label} className="object-contain"/>              
             </button>
             <div className="absolute left-1/2 -translate-x-1/2 flex flex-col justify-center text-center top-full mt-2 w-30 bg-base-200 p-3 rounded shadow-lg opacity-0 group-hover:opacity-100 transition-opacity z-10">
               <p className="text-sm"><strong>Cost:</strong> {upgrade.cost}</p>
@@ -187,6 +214,8 @@ export default function ClickerGame() {
           ></iframe>
         </div>
       )}
+
+      <audio ref={audioRef} src="/audio/ocean-waves-250310.mp3" loop preload="auto" style={{display: "none"}}/>
 
       {gameOver && (
         <div className="absolute inset-0 bg-black bg-opacity-80 flex flex-col justify-center items-center text-white z-50">
