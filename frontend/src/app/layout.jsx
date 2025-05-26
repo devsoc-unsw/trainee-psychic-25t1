@@ -1,5 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
-import { AuthProvider } from '@/components/AuthContext';
+import { AuthProvider } from "@/components/AuthContext";
+import "leaflet/dist/leaflet.css";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -21,9 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

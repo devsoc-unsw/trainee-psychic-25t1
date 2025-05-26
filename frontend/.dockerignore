@@ -1,0 +1,6 @@
+# ./frontend/.dockerignore
+node_modules
+.next
+npm-debug.log
+*.env
+# Add any other files/folders you don't want copied into the image
