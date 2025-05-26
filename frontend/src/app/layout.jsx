@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/components/AuthContext";
 import "leaflet/dist/leaflet.css";
+// import Marquee from "react-fast-marquee";
 import "./globals.css";
 
 const geistSans = Geist({
